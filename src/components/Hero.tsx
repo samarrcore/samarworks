@@ -23,45 +23,78 @@ const Hero = () => {
 
   return (
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background Animation */}
-      <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-electric-blue rounded-full filter blur-3xl animate-float"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-48 h-48 bg-electric-blue rounded-full filter blur-3xl animate-float" style={{ animationDelay: '1s' }}></div>
+      {/* Floating Background Elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-20 right-20 w-32 h-32 bg-electric-blue/20 rounded-full animate-float"></div>
+        <div className="absolute top-40 left-10 w-24 h-24 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-float" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute bottom-40 right-40 w-40 h-40 bg-gradient-to-r from-green-400 to-blue-500 rounded-full animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-20 left-20 w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-float" style={{ animationDelay: '0.5s' }}></div>
+        
+        {/* Floating Labels */}
+        <div className="absolute top-32 right-32 bg-electric-blue text-dark-bg px-4 py-2 rounded-full text-sm font-semibold animate-float">
+          Developer
+        </div>
+        <div className="absolute bottom-32 left-32 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-semibold animate-float" style={{ animationDelay: '1.5s' }}>
+          Problem Solver
+        </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
-        {/* Profile Picture Placeholder */}
-        <div className="mb-8">
-          <div className="w-32 h-32 mx-auto rounded-full bg-gradient-to-br from-electric-blue to-teal-400 p-1 animate-glow">
-            <div className="w-full h-full rounded-full bg-dark-card flex items-center justify-center">
-              <span className="text-4xl font-bold text-electric-blue">SP</span>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Side - Text Content */}
+          <div className="space-y-8">
+            <div className="space-y-2">
+              <p className="text-electric-blue font-medium text-lg">THIS IS ME</p>
+              <h1 className="text-5xl md:text-6xl font-bold">
+                <span className="text-gradient">Samar</span><br />
+                <span className="text-gradient">Pratap Singh</span>
+                <span className="text-electric-blue">→</span>
+              </h1>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="h-8 flex items-center">
+                <span className="text-xl text-muted-foreground font-medium">
+                  {displayText}
+                  <span className="animate-blink">|</span>
+                </span>
+              </div>
+              
+              <p className="text-muted-foreground leading-relaxed max-w-lg">
+                A passionate B.Tech Computer Science student & programmer from SRM IST, Tiruchirappalli. 
+                I love to add clarity to complicated concepts by design.
+              </p>
+            </div>
+
+            <button 
+              onClick={scrollToPortfolio}
+              className="group relative px-8 py-4 bg-transparent border-2 border-electric-blue text-electric-blue font-semibold rounded-full transition-all duration-300 hover:bg-electric-blue hover:text-dark-bg transform hover:scale-105"
+            >
+              <span className="relative z-10">Explore My Work →</span>
+            </button>
+          </div>
+
+          {/* Right Side - Profile Image with Floating Elements */}
+          <div className="relative">
+            <div className="relative w-80 h-80 mx-auto">
+              {/* Main Profile Container */}
+              <div className="w-full h-full rounded-3xl bg-gradient-to-br from-electric-blue/20 to-teal-400/20 flex items-center justify-center border border-electric-blue/30 relative overflow-hidden">
+                <span className="text-8xl font-bold text-electric-blue">SP</span>
+                
+                {/* Floating skill bubbles around profile */}
+                <div className="absolute -top-4 -right-4 bg-electric-blue text-dark-bg px-3 py-1 rounded-full text-sm font-medium">
+                  Experience designer
+                </div>
+                <div className="absolute -bottom-4 -left-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                  and developer remotely
+                </div>
+                <div className="absolute top-1/2 -right-8 bg-gradient-to-r from-green-400 to-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium transform -translate-y-1/2">
+                  from India
+                </div>
+              </div>
             </div>
           </div>
         </div>
-
-        <h1 className="text-5xl md:text-7xl font-bold mb-6">
-          <span className="text-gradient">Samar Pratap Singh</span>
-        </h1>
-        
-        <div className="h-16 flex items-center justify-center mb-8">
-          <span className="text-xl md:text-2xl text-muted-foreground font-medium">
-            {displayText}
-            <span className="animate-blink">|</span>
-          </span>
-        </div>
-
-        <p className="text-lg md:text-xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
-          Second-year B.Tech Computer Science student passionate about creating innovative digital solutions 
-          and exploring emerging technologies.
-        </p>
-
-        <button 
-          onClick={scrollToPortfolio}
-          className="group relative px-8 py-4 bg-transparent border-2 border-electric-blue text-electric-blue font-semibold rounded-lg transition-all duration-300 hover:bg-electric-blue hover:text-dark-bg transform hover:scale-105"
-        >
-          <span className="relative z-10">Explore My Work</span>
-          <div className="absolute inset-0 bg-electric-blue opacity-0 group-hover:opacity-10 rounded-lg transition-opacity duration-300"></div>
-        </button>
       </div>
     </section>
   );
