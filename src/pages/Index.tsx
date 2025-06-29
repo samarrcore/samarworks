@@ -7,6 +7,7 @@ import Skills from '../components/Skills';
 import Services from '../components/Services';
 import Portfolio from '../components/Portfolio';
 import Contact from '../components/Contact';
+import { Toaster } from "@/components/ui/toaster";
 
 const Index = () => {
   return (
@@ -18,6 +19,7 @@ const Index = () => {
       <Services />
       <Portfolio />
       <Contact />
+      <Toaster />
     </div>
   );
 };
