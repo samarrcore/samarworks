@@ -78,8 +78,12 @@ const Hero = () => {
           <div className="relative">
             <div className="relative w-80 h-80 mx-auto">
               {/* Main Profile Container */}
-              <div className="w-full h-full rounded-3xl bg-gradient-to-br from-electric-blue/20 to-teal-400/20 flex items-center justify-center border border-electric-blue/30 relative overflow-hidden">
-                <span className="text-8xl font-bold text-electric-blue">SP</span>
+              <div className="w-full h-full rounded-3xl bg-gradient-to-br from-electric-blue/20 to-teal-400/20 border border-electric-blue/30 relative overflow-hidden">
+                <img 
+                  src="https://i.postimg.cc/BZdpL1G6/Whats-App-Image-2025-06-30-at-01-46-23-68d0ecbe.jpg" 
+                  alt="Samar Pratap Singh"
+                  className="w-full h-full object-cover rounded-3xl"
+                />
                 
                 {/* Floating skill bubbles around profile */}
                 <div className="absolute -top-4 -right-4 bg-electric-blue text-dark-bg px-3 py-1 rounded-full text-sm font-medium">
