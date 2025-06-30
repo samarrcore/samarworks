@@ -25,16 +25,16 @@ const Hero = () => {
     <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Floating Background Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-20 right-20 w-32 h-32 bg-electric-blue/20 rounded-full animate-float"></div>
-        <div className="absolute top-40 left-10 w-24 h-24 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full animate-float" style={{ animationDelay: '1s' }}></div>
-        <div className="absolute bottom-40 right-40 w-40 h-40 bg-gradient-to-r from-green-400 to-blue-500 rounded-full animate-float" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-20 left-20 w-20 h-20 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-float" style={{ animationDelay: '0.5s' }}></div>
+        <div className="absolute top-20 right-20 w-32 h-32 bg-electric-blue/10 rounded-full animate-float"></div>
+        <div className="absolute top-40 left-10 w-24 h-24 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-full animate-float" style={{ animationDelay: '1s' }}></div>
+        <div className="absolute bottom-40 right-40 w-40 h-40 bg-gradient-to-r from-green-400/20 to-blue-500/20 rounded-full animate-float" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute bottom-20 left-20 w-20 h-20 bg-gradient-to-r from-yellow-400/20 to-orange-500/20 rounded-full animate-float" style={{ animationDelay: '0.5s' }}></div>
         
-        {/* Floating Labels */}
-        <div className="absolute top-32 right-32 bg-electric-blue text-dark-bg px-4 py-2 rounded-full text-sm font-semibold animate-float">
+        {/* Floating Labels with better positioning */}
+        <div className="absolute top-28 right-28 bg-muted/80 text-muted-foreground px-3 py-1.5 rounded-full text-sm font-medium animate-float backdrop-blur-sm border border-muted-foreground/20">
           Developer
         </div>
-        <div className="absolute bottom-32 left-32 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-full text-sm font-semibold animate-float" style={{ animationDelay: '1.5s' }}>
+        <div className="absolute bottom-40 left-28 bg-muted/80 text-muted-foreground px-3 py-1.5 rounded-full text-sm font-medium animate-float backdrop-blur-sm border border-muted-foreground/20" style={{ animationDelay: '1.5s' }}>
           Problem Solver
         </div>
       </div>
@@ -85,14 +85,14 @@ const Hero = () => {
                   className="w-full h-full object-cover rounded-3xl"
                 />
                 
-                {/* Floating skill bubbles around profile */}
-                <div className="absolute -top-4 -right-4 bg-electric-blue text-dark-bg px-3 py-1 rounded-full text-sm font-medium">
+                {/* Floating skill bubbles around profile with better spacing */}
+                <div className="absolute -top-6 -right-6 bg-muted/90 text-muted-foreground px-3 py-1.5 rounded-full text-sm font-medium backdrop-blur-sm border border-muted-foreground/20">
                   Experience designer
                 </div>
-                <div className="absolute -bottom-4 -left-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-medium">
+                <div className="absolute -bottom-6 -left-6 bg-muted/90 text-muted-foreground px-3 py-1.5 rounded-full text-sm font-medium backdrop-blur-sm border border-muted-foreground/20">
                   and developer remotely
                 </div>
-                <div className="absolute top-1/2 -right-8 bg-gradient-to-r from-green-400 to-blue-500 text-white px-3 py-1 rounded-full text-sm font-medium transform -translate-y-1/2">
+                <div className="absolute top-1/2 -right-10 bg-muted/90 text-muted-foreground px-3 py-1.5 rounded-full text-sm font-medium transform -translate-y-1/2 backdrop-blur-sm border border-muted-foreground/20">
                   from India
                 </div>
               </div>
