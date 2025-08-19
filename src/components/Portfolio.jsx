@@ -19,12 +19,12 @@ const projects = [
     category: "Game"
   },
   {
-    title: "Big Tac Toe",
-    description: "A team-based advanced tic-tac-toe game with nested boards and strategic gameplay.",
-    tech: ["JavaScript", "HTML", "CSS", "Algorithm"],
-    github: "https://github.com/samarrcore/big-tac-toe",
+    title: "ByteTalk",
+    description: "A modern communication platform designed for seamless conversations and efficient messaging.",
+    tech: ["JavaScript", "React", "Node.js", "MongoDB"],
+    github: "https://github.com/samarrcore/bytetalk",
     demo: "#",
-    category: "Game"
+    category: "Web App"
   },
 ];
 
