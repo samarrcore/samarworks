@@ -1,0 +1,32 @@
+@font-face {
+  font-family: 'Cascadia Code';
+  src: url('./assets/fonts/CascadiaCode.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --terminal-green: #00FF00;
+  --terminal-bg: #111;
+  --terminal-font: 'Cascadia Code', 'Consolas', 'Fira Mono', monospace;
+}
+
+html, body, #root {
+  font-family: var(--terminal-font);
+  color: var(--terminal-green);
+  background: var(--terminal-bg);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  letter-spacing: 0.02em;
+}
+
+.terminal {
+  font-family: var(--terminal-font);
+  color: var(--terminal-green);
+  background: var(--terminal-bg);
+  min-height: 100vh;
+  padding: 0;
+  margin: 0;
+  letter-spacing: 0.02em;
+}

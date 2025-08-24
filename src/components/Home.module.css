@@ -1,0 +1,27 @@
+.terminalWindow {
+  padding: 2rem;
+  max-width: 700px;
+  margin: 5rem auto 0 auto;
+  background: #222;
+  border-radius: 8px;
+  box-shadow: 0 0 24px #000a;
+  font-size: 1.5rem;
+  min-height: 120px;
+  position: relative;
+}
+
+.prompt {
+  color: #00ff00;
+  font-weight: bold;
+}
+
+.cursor {
+  color: #00ff00;
+  font-weight: bold;
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}

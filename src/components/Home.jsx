@@ -1,99 +1,146 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
+import styles from "../TerminalTheme.module.css";
+import terminalStyles from "./InteractiveTerminal.module.css";
 
-const Home = () => {
-  return (
-    <section id="home" className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background Effects */}
-      <div className="absolute inset-0 gradient-bg"></div>
-      <div className="absolute inset-0 opacity-20">
-        <div 
-          className="floating-element animate-float" 
-          style={{
-            position: 'absolute',
-            top: '5rem',
-            left: '5rem',
-            width: '18rem',
-            height: '18rem',
-            background: 'var(--primary)'
-          }}
-        ></div>
-        <div 
-          className="floating-element animate-float" 
-          style={{
-            position: 'absolute',
-            bottom: '5rem',
-            right: '5rem',
-            width: '24rem',
-            height: '24rem',
-            background: 'var(--accent)',
-            animationDelay: '2s'
-          }}
-        ></div>
-      </div>
+const commands = {
+  help: "Available commands: help, whoami, portfolio, skills, services, contact, clear",
+  whoami: "Unlocking About section...",
+  portfolio: "Unlocking Portfolio section...",
+  skills: "Unlocking Skills section...",
+  services: "Unlocking Services section...",
+  contact: "Unlocking Contact section...",
+  clear: "CLEAR"
+};
+
+const Home = ({ onSectionUnlock }) => {
+  const [history, setHistory] = useState([
+    { type: "output", content: "Welcome to SamarWorks Terminal v1.0" },
+    { type: "output", content: "🔒 Navigation is locked. Use terminal commands to explore!" },
+    { type: "output", content: "Type 'help' to see available commands" }
+  ]);
+  const [currentInput, setCurrentInput] = useState("");
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  const executeCommand = (cmd) => {
+    const command = cmd.toLowerCase().trim();
+    
+    // Add command to history
+    setHistory(prev => [...prev, { type: "command", content: `$ ${cmd}` }]);
+
+    if (command === "clear") {
+      setHistory([
+        { type: "output", content: "Welcome to SamarWorks Terminal v1.0" },
+        { type: "output", content: "🔒 Navigation is locked. Use terminal commands to explore!" },
+        { type: "output", content: "Type 'help' to see available commands" }
+      ]);
+      return;
+    }
+
+    if (commands[command]) {
+      setHistory(prev => [...prev, { type: "output", content: commands[command] }]);
       
-      <div className="relative z-10 container text-center">
-        <div className="animate-slide-up">
-          {/* Profile Avatar */}
-          <div className="mb-8">
-            <div 
-              className="mx-auto mb-8 rounded-full flex items-center justify-center shadow-2xl animate-float"
-              style={{
-                width: '10rem',
-                height: '10rem',
-                background: 'linear-gradient(135deg, var(--primary), var(--accent))'
-              }}
-            >
-              <span className="text-5xl font-bold" style={{color: 'white'}}>SP</span>
+      // Unlock and navigate to sections
+      setTimeout(() => {
+        switch (command) {
+          case "whoami":
+            onSectionUnlock('about');
+            setTimeout(() => {
+              document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+            break;
+          case "portfolio":
+            onSectionUnlock('portfolio');
+            setTimeout(() => {
+              document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+            break;
+          case "skills":
+            onSectionUnlock('skills');
+            setTimeout(() => {
+              document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+            break;
+          case "services":
+            onSectionUnlock('services');
+            setTimeout(() => {
+              document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+            break;
+          case "contact":
+            onSectionUnlock('contact');
+            setTimeout(() => {
+              document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+            break;
+        }
+      }, 1000);
+    } else {
+      setHistory(prev => [...prev, { type: "output", content: `Command not found: ${command}. Type 'help' for available commands.` }]);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      if (currentInput.trim()) {
+        executeCommand(currentInput);
+      }
+      setCurrentInput("");
+    }
+  };
+
+  const handleTerminalClick = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  return (
+    <section className={styles.terminal} id="home">
+      <div className={terminalStyles.terminalContainer}>
+        <div className={terminalStyles.terminalWindow} onClick={handleTerminalClick}>
+          <div className={terminalStyles.terminalHeader}>
+            <div className={terminalStyles.terminalButtons}>
+              <div className={`${terminalStyles.terminalButton} ${terminalStyles.close}`}></div>
+              <div className={`${terminalStyles.terminalButton} ${terminalStyles.minimize}`}></div>
+              <div className={`${terminalStyles.terminalButton} ${terminalStyles.maximize}`}></div>
             </div>
+            <div className={terminalStyles.terminalTitle}>samar@portfolio:~</div>
           </div>
-          
-          {/* Main Heading */}
-          <h1 className="font-bold mb-6 leading-tight" style={{fontSize: 'clamp(3rem, 8vw, 6rem)'}}>
-            <span className="block gradient-text">Samar Pratap Singh</span>
-          </h1>
-          
-          {/* Subtitle */}
-          <p className="text-secondary mb-8 font-light" style={{fontSize: 'clamp(1.25rem, 4vw, 2rem)'}}>
-            Aspiring Developer & Creative Problem Solver
-          </p>
-          
-          {/* Description */}
-          <p className="text-muted mb-12 mx-auto leading-relaxed" style={{fontSize: '1.125rem', maxWidth: '32rem'}}>
-            Building innovative solutions with modern technologies while pursuing excellence in Computer Science Engineering
-          </p>
-          
-          {/* CTA Buttons */}
-          <div className="flex flex-col gap-6 justify-center" style={{gap: '1.5rem'}}>
-            <button
-              onClick={() => document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth' })}
-              className="btn btn-primary"
-              style={{
-                padding: '1rem 2rem',
-                borderRadius: '1rem',
-                fontWeight: '600',
-                display: 'inline-flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}
-            >
-              <span className="flex items-center justify-center">
-                View My Work
-                <svg className="ml-2 w-4 h-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{marginLeft: '0.5rem', width: '1rem', height: '1rem'}}>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                </svg>
-              </span>
-            </button>
-            <button
-              onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}
-              className="btn btn-outline"
-              style={{
-                padding: '1rem 2rem',
-                borderRadius: '1rem',
-                fontWeight: '600'
-              }}
-            >
-              Get In Touch
-            </button>
+          <div className={terminalStyles.terminalBody}>
+            {history.map((item, index) => (
+              <div key={index}>
+                {item.type === "command" ? (
+                  <div className={terminalStyles.terminalLine}>
+                    <span className={terminalStyles.prompt}>samar@portfolio:~$</span>
+                    <span className={terminalStyles.command}>{item.content.substring(2)}</span>
+                  </div>
+                ) : (
+                  <div className={terminalStyles.output}>{item.content}</div>
+                )}
+              </div>
+            ))}
+            <div className={terminalStyles.inputLine}>
+              <span className={terminalStyles.prompt}>samar@portfolio:~$</span>
+              <input
+                ref={inputRef}
+                className={terminalStyles.terminalInput}
+                value={currentInput}
+                onChange={(e) => setCurrentInput(e.target.value)}
+                onKeyPress={handleKeyPress}
+                autoComplete="off"
+                spellCheck="false"
+              />
+              <span className={terminalStyles.cursor}>|</span>
+            </div>
+            <div className={terminalStyles.helpText}>
+              💡 Try typing: help, whoami, portfolio, skills, services, contact
+            </div>
           </div>
         </div>
       </div>

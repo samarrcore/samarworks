@@ -1,5 +1,5 @@
 
-import './App.css'
+import "./TerminalTheme.module.css";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import About from "./components/About";
@@ -8,23 +8,29 @@ import Services from "./components/Services";
 import Portfolio from "./components/Portfolio";
 import Contact from "./components/Contact";
 import Footer from "./components/Footer";
+import React, { useState } from "react";
 
 function App() {
+  const [unlockedSections, setUnlockedSections] = useState(new Set(['home']));
+
+  const unlockSection = (sectionName) => {
+    setUnlockedSections(prev => new Set([...prev, sectionName]));
+  };
 
   return (
-    <div className="bg-background min-h-screen text-primary" style={{fontFamily: "'Inter', system-ui, sans-serif", scrollBehavior: 'smooth'}}>
+    <div style={{ overflow: unlockedSections.size === 1 ? 'hidden' : 'auto', height: unlockedSections.size === 1 ? '100vh' : 'auto' }}>
       <Navbar />
-      <main className="relative">
-        <Home />
-        <About />
-        <Skills />
-        <Services />
-        <Portfolio />
-        <Contact />
+      <main>
+        <Home onSectionUnlock={unlockSection} />
+        {unlockedSections.has('about') && <About />}
+        {unlockedSections.has('skills') && <Skills />}
+        {unlockedSections.has('services') && <Services />}
+        {unlockedSections.has('portfolio') && <Portfolio />}
+        {unlockedSections.has('contact') && <Contact />}
       </main>
-      <Footer />
+      {unlockedSections.size > 1 && <Footer />}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

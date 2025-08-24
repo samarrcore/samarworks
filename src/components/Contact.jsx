@@ -1,5 +1,39 @@
 import React, { useState } from "react";
 import { FaEnvelope, FaPhone, FaLinkedin, FaGithub, FaMapMarkerAlt } from "react-icons/fa";
+import sectionStyles from "./Section.module.css";
+
+const contactInfo = [
+  {
+    icon: <FaEnvelope />,
+    label: "Email",
+    value: "samarpratapyes.01@gmail.com",
+    link: "mailto:samarpratapyes.01@gmail.com"
+  },
+  {
+    icon: <FaPhone />,
+    label: "Phone",
+    value: "+91 9798499241",
+    link: "tel:9798499241"
+  },
+  {
+    icon: <FaMapMarkerAlt />,
+    label: "Location",
+    value: "Tiruchirappalli, Tamil Nadu",
+    link: null
+  },
+  {
+    icon: <FaLinkedin />,
+    label: "LinkedIn",
+    value: "Connect with me",
+    link: "https://www.linkedin.com/in/samar-singh-444bb927b/"
+  },
+  {
+    icon: <FaGithub />,
+    label: "GitHub",
+    value: "View my repositories",
+    link: "https://github.com/samarrcore"
+  }
+];
 
 const Contact = () => {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -16,208 +50,40 @@ const Contact = () => {
     setTimeout(() => setSubmitted(false), 3000);
   };
 
-  const contactInfo = [
-    {
-      icon: <FaEnvelope className="text-2xl" />,
-      label: "Email",
-      value: "samarpratapyes.01@gmail.com",
-      link: "mailto:samarpratapyes.01@gmail.com"
-    },
-    {
-      icon: <FaPhone className="text-2xl" />,
-      label: "Phone",
-      value: "+91 9798499241",
-      link: "tel:9798499241"
-    },
-    {
-      icon: <FaMapMarkerAlt className="text-2xl" />,
-      label: "Location",
-      value: "Tiruchirappalli, Tamil Nadu",
-      link: null
-    },
-    {
-      icon: <FaLinkedin className="text-2xl" />,
-      label: "LinkedIn",
-      value: "Connect with me",
-      link: "https://www.linkedin.com/in/samar-singh-444bb927b/"
-    },
-    {
-      icon: <FaGithub className="text-2xl" />,
-      label: "GitHub",
-      value: "View my repositories",
-      link: "https://github.com/samarrcore"
-    }
-  ];
-
   return (
-    <section id="contact" className="section py-24 bg-background-secondary">
-      {/* Background decoration */}
-      <div className="bg-decoration absolute inset-0">
-        <div 
-          className="floating-element animate-float"
-          style={{
-            position: 'absolute',
-            top: '2.5rem',
-            left: '2.5rem',
-            width: '20rem',
-            height: '20rem',
-            background: 'var(--primary)'
-          }}
-        ></div>
+    <section id="contact" className={sectionStyles.section}>
+      <h2 className={sectionStyles.sectionTitle}>Get In Touch</h2>
+      <div className={sectionStyles.sectionContent}>
+        Ready to start a conversation? I'd love to hear from you.
       </div>
-      
-      <div className="relative z-10 container">
-        {/* Section Header */}
-        <div className="section-header">
-          <h2 className="section-title gradient-text">Get In Touch</h2>
-          <div className="gradient-border"></div>
-          <p className="section-subtitle">
-            Ready to start a conversation? I'd love to hear from you.
-          </p>
-        </div>
-
-        <div 
-          className="grid gap-16"
-          style={{
-            gridTemplateColumns: window.innerWidth >= 1024 ? '1fr 1fr' : '1fr'
-          }}
-        >
-          {/* Contact Information */}
-          <div style={{display: 'flex', flexDirection: 'column', gap: '2rem'}}>
-            <div>
-              <h3 className="text-3xl font-bold text-primary mb-6">Let's Connect</h3>
-              <p className="text-secondary leading-relaxed mb-8 text-lg">
-                Whether you have a project in mind, want to collaborate, or just want to say hello, 
-                I'm always excited to connect with fellow developers and potential clients.
-              </p>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: "2rem", justifyContent: "center" }}>
+        {/* Contact Info */}
+        <div style={{ minWidth: 260, maxWidth: 340, flex: "1 1 260px", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+          {contactInfo.map((info, idx) => (
+            <div key={idx} style={{ display: "flex", alignItems: "center", gap: 16, background: "#181818", borderRadius: 8, border: "1px solid #222", padding: "1rem" }}>
+              <span style={{ fontSize: 24, color: "#00ff00" }}>{info.icon}</span>
+              <div>
+                <div style={{ color: "#00ff00", fontWeight: 600 }}>{info.label}</div>
+                {info.link ? (
+                  <a href={info.link} target="_blank" rel="noopener noreferrer" style={{ color: "#00ff00", textDecoration: "underline", fontSize: 14 }}>{info.value}</a>
+                ) : (
+                  <span style={{ color: "#00ff00", fontSize: 14 }}>{info.value}</span>
+                )}
+              </div>
             </div>
-
-            <div style={{display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
-              {contactInfo.map((info, index) => (
-                <div key={index} className="flex items-start" style={{gap: '1rem'}}>
-                  <div 
-                    className="flex-shrink-0 flex items-center justify-center text-primary border transition-all"
-                    style={{
-                      width: '3.5rem',
-                      height: '3.5rem',
-                      background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(16, 185, 129, 0.2))',
-                      borderRadius: '1rem',
-                      borderColor: 'rgba(139, 92, 246, 0.2)',
-                      cursor: 'pointer'
-                    }}
-                    onMouseEnter={(e) => e.target.style.borderColor = 'rgba(139, 92, 246, 0.5)'}
-                    onMouseLeave={(e) => e.target.style.borderColor = 'rgba(139, 92, 246, 0.2)'}
-                  >
-                    {info.icon}
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-primary mb-2 text-lg transition-colors">{info.label}</h4>
-                    {info.link ? (
-                      <a 
-                        href={info.link} 
-                        target={info.link.startsWith('http') ? '_blank' : undefined}
-                        rel={info.link.startsWith('http') ? 'noopener noreferrer' : undefined}
-                        className="text-secondary font-medium transition-colors"
-                        style={{textDecoration: 'none'}}
-                        onMouseEnter={(e) => e.target.style.color = 'var(--primary)'}
-                        onMouseLeave={(e) => e.target.style.color = 'var(--text-secondary)'}
-                      >
-                        {info.value}
-                      </a>
-                    ) : (
-                      <span className="text-secondary font-medium">{info.value}</span>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Contact Form */}
-          <div className="contact-form">
-            <h3 className="text-3xl font-bold text-primary mb-8">Send a Message</h3>
-            
-            <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column', gap: '1.5rem'}}>
-              <div>
-                <label htmlFor="name" className="form-label">
-                  Your Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  placeholder="John Doe"
-                  value={form.name}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="email" className="form-label">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  placeholder="john@example.com"
-                  value={form.email}
-                  onChange={handleChange}
-                  className="form-input"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="message" className="form-label">
-                  Message
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  placeholder="Tell me about your project or just say hello..."
-                  value={form.message}
-                  onChange={handleChange}
-                  rows={6}
-                  className="form-input"
-                  style={{resize: 'none'}}
-                  required
-                />
-              </div>
-
-              <button 
-                type="submit" 
-                className="btn btn-primary w-full"
-                style={{
-                  borderRadius: '1rem',
-                  fontWeight: '700',
-                  padding: '1rem'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.transform = 'translateY(-2px)';
-                  e.target.style.boxShadow = '0 25px 50px -12px rgba(139, 92, 246, 0.25)';
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = 'translateY(0)';
-                  e.target.style.boxShadow = 'none';
-                }}
-              >
-                Send Message
-              </button>
-
-              {submitted && (
-                <div 
-                  className="glass text-accent px-6 py-4 rounded-2xl text-center font-semibold"
-                  style={{border: '1px solid rgba(16, 185, 129, 0.5)'}}
-                >
-                  Thank you! Your message has been sent successfully.
-                </div>
-              )}
-            </form>
-          </div>
+          ))}
         </div>
+        {/* Contact Form */}
+        <form onSubmit={handleSubmit} style={{ minWidth: 260, maxWidth: 340, flex: "1 1 260px", display: "flex", flexDirection: "column", gap: "1rem", background: "#181818", borderRadius: 8, border: "1px solid #222", padding: "1.5rem" }}>
+          <label style={{ color: "#00ff00", fontWeight: 500, marginBottom: 4 }}>Your Name</label>
+          <input type="text" name="name" value={form.name} onChange={handleChange} required style={{ padding: "0.5rem", borderRadius: 4, border: "1px solid #222", background: "#222", color: "#00ff00", marginBottom: 8 }} />
+          <label style={{ color: "#00ff00", fontWeight: 500, marginBottom: 4 }}>Email Address</label>
+          <input type="email" name="email" value={form.email} onChange={handleChange} required style={{ padding: "0.5rem", borderRadius: 4, border: "1px solid #222", background: "#222", color: "#00ff00", marginBottom: 8 }} />
+          <label style={{ color: "#00ff00", fontWeight: 500, marginBottom: 4 }}>Message</label>
+          <textarea name="message" value={form.message} onChange={handleChange} rows={5} required style={{ padding: "0.5rem", borderRadius: 4, border: "1px solid #222", background: "#222", color: "#00ff00", marginBottom: 8, resize: "none" }} />
+          <button type="submit" style={{ background: "#00ff00", color: "#181818", fontWeight: 700, border: "none", borderRadius: 4, padding: "0.75rem", marginTop: 8, cursor: "pointer" }}>Send Message</button>
+          {submitted && <div style={{ color: "#00ff00", marginTop: 8 }}>Thank you! Your message has been sent successfully.</div>}
+        </form>
       </div>
     </section>
   );
