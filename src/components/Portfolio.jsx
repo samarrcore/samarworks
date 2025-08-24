@@ -1,6 +1,6 @@
-import React from "react";
-import { FaGithub } from "react-icons/fa";
-import sectionStyles from "./Section.module.css";
+import React, { useState, useEffect } from "react";
+import { FaGithub, FaExternalLinkAlt } from "react-icons/fa";
+import styles from "../TerminalTheme.module.css";
 
 const projects = [
   {
@@ -26,31 +26,120 @@ const projects = [
   },
 ];
 
-const Portfolio = () => {
+const Portfolio = ({ onNavigate }) => {
+  const [displayedCommand, setDisplayedCommand] = useState("");
+  const [showOutput, setShowOutput] = useState(false);
+  const [animatedProjects, setAnimatedProjects] = useState([]);
+  
+  const command = "ls -la projects/";
+
+  useEffect(() => {
+    // Type the command
+    let i = 0;
+    const typing = setInterval(() => {
+      if (i < command.length) {
+        setDisplayedCommand(command.slice(0, i + 1));
+        i++;
+      } else {
+        clearInterval(typing);
+        setTimeout(() => {
+          setShowOutput(true);
+          // Animate projects appearing
+          projects.forEach((project, index) => {
+            setTimeout(() => {
+              setAnimatedProjects(prev => [...prev, project]);
+            }, index * 200);
+          });
+        }, 500);
+      }
+    }, 50);
+
+    return () => clearInterval(typing);
+  }, []);
+
   return (
-    <section id="portfolio" className={sectionStyles.section}>
-      <h2 className={sectionStyles.sectionTitle}>Portfolio</h2>
-      <div className={sectionStyles.sectionContent}>
-        A showcase of my recent projects and creative solutions
-      </div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "2rem", justifyContent: "center" }}>
-        {projects.map((project) => (
-          <div key={project.title} style={{ background: "#181818", borderRadius: 8, border: "1px solid #222", padding: "2rem 1.5rem", minWidth: 260, maxWidth: 340, flex: "1 1 260px", display: "flex", flexDirection: "column", alignItems: "center" }}>
-            <div style={{ fontSize: 40, marginBottom: 12, color: "#00ff00", fontWeight: 700 }}>{project.title.charAt(0)}</div>
-            <h3 style={{ color: "#00ff00", fontWeight: 700, marginBottom: 10, fontSize: 18 }}>{project.title}</h3>
-            <div style={{ color: "#00ff00", marginBottom: 12, textAlign: "center", fontSize: 14 }}>{project.description}</div>
-            <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: 10 }}>
-              {project.tech.map((tech) => (
-                <span key={tech} style={{ background: "rgba(0,255,0,0.08)", border: "1px solid #00ff00", color: "#00ff00", borderRadius: 4, padding: "0.2rem 0.5rem", fontSize: 12 }}>{tech}</span>
-              ))}
+    <div className={styles.page}>
+      <div className={styles.container}>
+        <div className={styles.terminalWindow}>
+          <div className={styles.terminalHeader}>
+            <div className={styles.terminalButtons}>
+              <div className={`${styles.terminalButton} ${styles.close}`}></div>
+              <div className={`${styles.terminalButton} ${styles.minimize}`}></div>
+              <div className={`${styles.terminalButton} ${styles.maximize}`}></div>
             </div>
-            <a href={project.github} target="_blank" rel="noopener noreferrer" style={{ color: "#00ff00", marginTop: 8, textDecoration: "underline", fontWeight: 500, display: "flex", alignItems: "center", gap: 6 }}>
-              <FaGithub /> Code
-            </a>
+            <div className={styles.terminalTitle}>Portfolio - samar@portfolio:~/projects</div>
           </div>
-        ))}
+          
+          <div className={styles.terminalContent}>
+            <div className={styles.commandBlock}>
+              <div className={styles.commandLine}>
+                <span className={styles.prompt}>samar@portfolio:~/projects$</span>
+                <span className={styles.command}>{displayedCommand}</span>
+                {displayedCommand.length < command.length && <span className={styles.cursor}>|</span>}
+              </div>
+              
+              {showOutput && (
+                <div className={styles.output}>
+                  <div className={styles.portfolioHeader}>
+                    <p>📁 Project Repository</p>
+                    <p>Total: {projects.length} projects</p>
+                    <div className={styles.divider}>{'─'.repeat(60)}</div>
+                  </div>
+
+                  <div className={styles.projectGrid}>
+                    {projects
+                      .filter(project => animatedProjects.includes(project))
+                      .map(project => (
+                        <div key={project.title} className={styles.projectCard}>
+                          <div className={styles.projectHeader}>
+                            <div className={styles.projectIcon}>
+                              {project.category === 'Extension' ? '🔧' : '🎮'}
+                            </div>
+                            <h3 className={styles.projectTitle}>{project.title}</h3>
+                            <div className={styles.projectCategory}>[{project.category}]</div>
+                          </div>
+                          
+                          <div className={styles.projectDescription}>
+                            {project.description}
+                          </div>
+                          
+                          <div className={styles.techStack}>
+                            {project.tech.map((tech) => (
+                              <span key={tech} className={styles.techTag}>{tech}</span>
+                            ))}
+                          </div>
+                          
+                          <div className={styles.projectLinks}>
+                            <a 
+                              href={project.github} 
+                              target="_blank" 
+                              rel="noopener noreferrer" 
+                              className={styles.projectLink}
+                            >
+                              <FaGithub /> Source Code
+                            </a>
+                          </div>
+                        </div>
+                      ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className={styles.navigationHelp}>
+              <p>💡 Use terminal commands to navigate:</p>
+              <div className={styles.commandList}>
+                <span onClick={() => onNavigate('home')} className={styles.clickableCommand}>home</span>
+                <span onClick={() => onNavigate('about')} className={styles.clickableCommand}>about</span>
+                <span onClick={() => onNavigate('skills')} className={styles.clickableCommand}>skills</span>
+                <span onClick={() => onNavigate('services')} className={styles.clickableCommand}>services</span>
+                <span onClick={() => onNavigate('contact')} className={styles.clickableCommand}>contact</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
   );
 };
 

@@ -3,29 +3,58 @@ import styles from "../TerminalTheme.module.css";
 import terminalStyles from "./InteractiveTerminal.module.css";
 
 const commands = {
-  help: "Available commands: help, whoami, portfolio, skills, services, contact, clear",
-  whoami: "Unlocking About section...",
-  portfolio: "Unlocking Portfolio section...",
-  skills: "Unlocking Skills section...",
-  services: "Unlocking Services section...",
-  contact: "Unlocking Contact section...",
+  help: "Available commands: help, about, portfolio, skills, services, contact, home, clear",
+  about: "Loading About page...",
+  portfolio: "Loading Portfolio page...",
+  skills: "Loading Skills page...",
+  services: "Loading Services page...",
+  contact: "Loading Contact page...",
+  home: "Returning to home terminal...",
   clear: "CLEAR"
 };
 
-const Home = ({ onSectionUnlock }) => {
+const Home = ({ onNavigate, pendingCommand }) => {
   const [history, setHistory] = useState([
-    { type: "output", content: "Welcome to SamarWorks Terminal v1.0" },
-    { type: "output", content: "🔒 Navigation is locked. Use terminal commands to explore!" },
+    { type: "output", content: "Welcome to SamarWorks Terminal v2.0" },
+    { type: "output", content: "🌟 Explore the portfolio using terminal commands!" },
     { type: "output", content: "Type 'help' to see available commands" }
   ]);
   const [currentInput, setCurrentInput] = useState("");
+  const [isAutoTyping, setIsAutoTyping] = useState(false);
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (inputRef.current) {
+    if (inputRef.current && !isAutoTyping) {
       inputRef.current.focus();
     }
-  }, []);
+  }, [isAutoTyping]);
+
+  // Handle pending command auto-typing
+  useEffect(() => {
+    if (pendingCommand && !isAutoTyping) {
+      setIsAutoTyping(true);
+      setCurrentInput("");
+      
+      // Auto-type the command
+      let i = 0;
+      const typeInterval = setInterval(() => {
+        if (i < pendingCommand.length) {
+          setCurrentInput(pendingCommand.slice(0, i + 1));
+          i++;
+        } else {
+          clearInterval(typeInterval);
+          // Execute the command after typing is complete
+          setTimeout(() => {
+            executeCommand(pendingCommand);
+            setCurrentInput("");
+            setIsAutoTyping(false);
+          }, 500);
+        }
+      }, 100);
+
+      return () => clearInterval(typeInterval);
+    }
+  }, [pendingCommand]);
 
   const executeCommand = (cmd) => {
     const command = cmd.toLowerCase().trim();
@@ -35,8 +64,8 @@ const Home = ({ onSectionUnlock }) => {
 
     if (command === "clear") {
       setHistory([
-        { type: "output", content: "Welcome to SamarWorks Terminal v1.0" },
-        { type: "output", content: "🔒 Navigation is locked. Use terminal commands to explore!" },
+        { type: "output", content: "Welcome to SamarWorks Terminal v2.0" },
+        { type: "output", content: "🌟 Explore the portfolio using terminal commands!" },
         { type: "output", content: "Type 'help' to see available commands" }
       ]);
       return;
@@ -45,38 +74,26 @@ const Home = ({ onSectionUnlock }) => {
     if (commands[command]) {
       setHistory(prev => [...prev, { type: "output", content: commands[command] }]);
       
-      // Unlock and navigate to sections
+      // Navigate to pages
       setTimeout(() => {
         switch (command) {
-          case "whoami":
-            onSectionUnlock('about');
-            setTimeout(() => {
-              document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+          case "about":
+            onNavigate('about');
             break;
           case "portfolio":
-            onSectionUnlock('portfolio');
-            setTimeout(() => {
-              document.getElementById('portfolio')?.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+            onNavigate('portfolio');
             break;
           case "skills":
-            onSectionUnlock('skills');
-            setTimeout(() => {
-              document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+            onNavigate('skills');
             break;
           case "services":
-            onSectionUnlock('services');
-            setTimeout(() => {
-              document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+            onNavigate('services');
             break;
           case "contact":
-            onSectionUnlock('contact');
-            setTimeout(() => {
-              document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+            onNavigate('contact');
+            break;
+          case "home":
+            onNavigate('home');
             break;
         }
       }, 1000);
@@ -86,6 +103,8 @@ const Home = ({ onSectionUnlock }) => {
   };
 
   const handleKeyPress = (e) => {
+    if (isAutoTyping) return; // Don't allow manual input during auto-typing
+    
     if (e.key === "Enter") {
       if (currentInput.trim()) {
         executeCommand(currentInput);
@@ -95,7 +114,7 @@ const Home = ({ onSectionUnlock }) => {
   };
 
   const handleTerminalClick = () => {
-    if (inputRef.current) {
+    if (inputRef.current && !isAutoTyping) {
       inputRef.current.focus();
     }
   };
@@ -131,15 +150,20 @@ const Home = ({ onSectionUnlock }) => {
                 ref={inputRef}
                 className={terminalStyles.terminalInput}
                 value={currentInput}
-                onChange={(e) => setCurrentInput(e.target.value)}
+                onChange={(e) => !isAutoTyping && setCurrentInput(e.target.value)}
                 onKeyPress={handleKeyPress}
                 autoComplete="off"
                 spellCheck="false"
+                disabled={isAutoTyping}
+                style={{ 
+                  opacity: isAutoTyping ? 0.7 : 1,
+                  pointerEvents: isAutoTyping ? 'none' : 'auto'
+                }}
               />
               <span className={terminalStyles.cursor}>|</span>
             </div>
             <div className={terminalStyles.helpText}>
-              💡 Try typing: help, whoami, portfolio, skills, services, contact
+              💡 Try typing: help, about, portfolio, skills, services, contact
             </div>
           </div>
         </div>

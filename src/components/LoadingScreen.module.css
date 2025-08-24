@@ -1,0 +1,130 @@
+.loadingContainer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.terminal {
+  width: 500px;
+  max-width: 90vw;
+  background: #0c0c0c;
+  border-radius: 12px;
+  border: 2px solid #333;
+  box-shadow: 0 0 30px rgba(0, 255, 0, 0.2);
+  overflow: hidden;
+}
+
+.header {
+  background: #1a1a1a;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #333;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.button {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.close { background: #ff5f57; }
+.minimize { background: #ffbd2e; }
+.maximize { background: #28ca42; }
+
+.title {
+  color: #888;
+  font-size: 0.875rem;
+  margin-left: 1rem;
+  font-family: inherit;
+}
+
+.content {
+  padding: 2rem;
+  color: #00ff00;
+  font-family: inherit;
+}
+
+.loadingText {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+.prompt {
+  margin-right: 0.5rem;
+  font-weight: bold;
+}
+
+.progressBar {
+  width: 100%;
+  height: 4px;
+  background: #333;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+
+.progress {
+  height: 100%;
+  background: linear-gradient(90deg, #00ff00, #00aa00);
+  border-radius: 2px;
+  animation: progressAnimation 2s ease-in-out infinite;
+}
+
+.dots {
+  text-align: center;
+  font-size: 1.5rem;
+}
+
+.dot {
+  animation: dotAnimation 1.5s ease-in-out infinite;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes progressAnimation {
+  0% {
+    width: 0%;
+    transform: translateX(-100%);
+  }
+  50% {
+    width: 100%;
+    transform: translateX(0%);
+  }
+  100% {
+    width: 100%;
+    transform: translateX(100%);
+  }
+}
+
+@keyframes dotAnimation {
+  0%, 60%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  30% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}

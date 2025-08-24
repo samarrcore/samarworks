@@ -1,43 +1,77 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaEnvelope, FaPhone, FaLinkedin, FaGithub, FaMapMarkerAlt } from "react-icons/fa";
-import sectionStyles from "./Section.module.css";
+import styles from "../TerminalTheme.module.css";
 
 const contactInfo = [
   {
     icon: <FaEnvelope />,
     label: "Email",
     value: "samarpratapyes.01@gmail.com",
-    link: "mailto:samarpratapyes.01@gmail.com"
+    link: "mailto:samarpratapyes.01@gmail.com",
+    type: "email"
   },
   {
     icon: <FaPhone />,
     label: "Phone",
     value: "+91 9798499241",
-    link: "tel:9798499241"
+    link: "tel:9798499241",
+    type: "phone"
   },
   {
     icon: <FaMapMarkerAlt />,
     label: "Location",
     value: "Tiruchirappalli, Tamil Nadu",
-    link: null
+    link: null,
+    type: "location"
   },
   {
     icon: <FaLinkedin />,
     label: "LinkedIn",
     value: "Connect with me",
-    link: "https://www.linkedin.com/in/samar-singh-444bb927b/"
+    link: "https://www.linkedin.com/in/samar-singh-444bb927b/",
+    type: "social"
   },
   {
     icon: <FaGithub />,
     label: "GitHub",
     value: "View my repositories",
-    link: "https://github.com/samarrcore"
+    link: "https://github.com/samarrcore",
+    type: "social"
   }
 ];
 
-const Contact = () => {
+const Contact = ({ onNavigate }) => {
+  const [displayedCommand, setDisplayedCommand] = useState("");
+  const [showOutput, setShowOutput] = useState(false);
+  const [animatedContacts, setAnimatedContacts] = useState([]);
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  
+  const command = "cat contact.vcard";
+
+  useEffect(() => {
+    // Type the command
+    let i = 0;
+    const typing = setInterval(() => {
+      if (i < command.length) {
+        setDisplayedCommand(command.slice(0, i + 1));
+        i++;
+      } else {
+        clearInterval(typing);
+        setTimeout(() => {
+          setShowOutput(true);
+          // Animate contact info appearing
+          contactInfo.forEach((contact, index) => {
+            setTimeout(() => {
+              setAnimatedContacts(prev => [...prev, contact]);
+            }, index * 150);
+          });
+        }, 500);
+      }
+    }, 50);
+
+    return () => clearInterval(typing);
+  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -51,41 +85,130 @@ const Contact = () => {
   };
 
   return (
-    <section id="contact" className={sectionStyles.section}>
-      <h2 className={sectionStyles.sectionTitle}>Get In Touch</h2>
-      <div className={sectionStyles.sectionContent}>
-        Ready to start a conversation? I'd love to hear from you.
-      </div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: "2rem", justifyContent: "center" }}>
-        {/* Contact Info */}
-        <div style={{ minWidth: 260, maxWidth: 340, flex: "1 1 260px", display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-          {contactInfo.map((info, idx) => (
-            <div key={idx} style={{ display: "flex", alignItems: "center", gap: 16, background: "#181818", borderRadius: 8, border: "1px solid #222", padding: "1rem" }}>
-              <span style={{ fontSize: 24, color: "#00ff00" }}>{info.icon}</span>
-              <div>
-                <div style={{ color: "#00ff00", fontWeight: 600 }}>{info.label}</div>
-                {info.link ? (
-                  <a href={info.link} target="_blank" rel="noopener noreferrer" style={{ color: "#00ff00", textDecoration: "underline", fontSize: 14 }}>{info.value}</a>
-                ) : (
-                  <span style={{ color: "#00ff00", fontSize: 14 }}>{info.value}</span>
-                )}
+    <div className={styles.page}>
+      <div className={styles.container}>
+        <div className={styles.terminalWindow}>
+          <div className={styles.terminalHeader}>
+            <div className={styles.terminalButtons}>
+              <div className={`${styles.terminalButton} ${styles.close}`}></div>
+              <div className={`${styles.terminalButton} ${styles.minimize}`}></div>
+              <div className={`${styles.terminalButton} ${styles.maximize}`}></div>
+            </div>
+            <div className={styles.terminalTitle}>Contact - samar@portfolio:~/contact</div>
+          </div>
+          
+          <div className={styles.terminalContent}>
+            <div className={styles.commandBlock}>
+              <div className={styles.commandLine}>
+                <span className={styles.prompt}>samar@portfolio:~/contact$</span>
+                <span className={styles.command}>{displayedCommand}</span>
+                {displayedCommand.length < command.length && <span className={styles.cursor}>|</span>}
+              </div>
+              
+              {showOutput && (
+                <div className={styles.output}>
+                  <div className={styles.contactHeader}>
+                    <p>📞 Contact Information</p>
+                    <p>Status: Available for opportunities</p>
+                    <div className={styles.divider}>{'─'.repeat(60)}</div>
+                  </div>
+
+                  <div className={styles.contactLayout}>
+                    <div className={styles.contactInfo}>
+                      <h3 className={styles.contactSectionTitle}>Contact Details</h3>
+                      {contactInfo
+                        .filter(contact => animatedContacts.includes(contact))
+                        .map((info, idx) => (
+                          <div key={idx} className={styles.contactItem}>
+                            <div className={styles.contactIcon}>{info.icon}</div>
+                            <div className={styles.contactDetails}>
+                              <div className={styles.contactLabel}>{info.label}</div>
+                              {info.link ? (
+                                <a 
+                                  href={info.link} 
+                                  target="_blank" 
+                                  rel="noopener noreferrer" 
+                                  className={styles.contactLink}
+                                >
+                                  {info.value}
+                                </a>
+                              ) : (
+                                <span className={styles.contactValue}>{info.value}</span>
+                              )}
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+
+                    <div className={styles.contactForm}>
+                      <h3 className={styles.contactSectionTitle}>Send Message</h3>
+                      <form onSubmit={handleSubmit} className={styles.messageForm}>
+                        <div className={styles.formGroup}>
+                          <label className={styles.formLabel}>Name:</label>
+                          <input 
+                            type="text" 
+                            name="name" 
+                            value={form.name} 
+                            onChange={handleChange} 
+                            required 
+                            className={styles.formInput}
+                          />
+                        </div>
+                        
+                        <div className={styles.formGroup}>
+                          <label className={styles.formLabel}>Email:</label>
+                          <input 
+                            type="email" 
+                            name="email" 
+                            value={form.email} 
+                            onChange={handleChange} 
+                            required 
+                            className={styles.formInput}
+                          />
+                        </div>
+                        
+                        <div className={styles.formGroup}>
+                          <label className={styles.formLabel}>Message:</label>
+                          <textarea 
+                            name="message" 
+                            value={form.message} 
+                            onChange={handleChange} 
+                            rows={4} 
+                            required 
+                            className={styles.formTextarea}
+                          />
+                        </div>
+                        
+                        <button type="submit" className={styles.formButton}>
+                          Send Message
+                        </button>
+                        
+                        {submitted && (
+                          <div className={styles.formSuccess}>
+                            ✓ Message sent successfully!
+                          </div>
+                        )}
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <div className={styles.navigationHelp}>
+              <p>💡 Use terminal commands to navigate:</p>
+              <div className={styles.commandList}>
+                <span onClick={() => onNavigate('home')} className={styles.clickableCommand}>home</span>
+                <span onClick={() => onNavigate('about')} className={styles.clickableCommand}>about</span>
+                <span onClick={() => onNavigate('skills')} className={styles.clickableCommand}>skills</span>
+                <span onClick={() => onNavigate('portfolio')} className={styles.clickableCommand}>portfolio</span>
+                <span onClick={() => onNavigate('services')} className={styles.clickableCommand}>services</span>
               </div>
             </div>
-          ))}
+          </div>
         </div>
-        {/* Contact Form */}
-        <form onSubmit={handleSubmit} style={{ minWidth: 260, maxWidth: 340, flex: "1 1 260px", display: "flex", flexDirection: "column", gap: "1rem", background: "#181818", borderRadius: 8, border: "1px solid #222", padding: "1.5rem" }}>
-          <label style={{ color: "#00ff00", fontWeight: 500, marginBottom: 4 }}>Your Name</label>
-          <input type="text" name="name" value={form.name} onChange={handleChange} required style={{ padding: "0.5rem", borderRadius: 4, border: "1px solid #222", background: "#222", color: "#00ff00", marginBottom: 8 }} />
-          <label style={{ color: "#00ff00", fontWeight: 500, marginBottom: 4 }}>Email Address</label>
-          <input type="email" name="email" value={form.email} onChange={handleChange} required style={{ padding: "0.5rem", borderRadius: 4, border: "1px solid #222", background: "#222", color: "#00ff00", marginBottom: 8 }} />
-          <label style={{ color: "#00ff00", fontWeight: 500, marginBottom: 4 }}>Message</label>
-          <textarea name="message" value={form.message} onChange={handleChange} rows={5} required style={{ padding: "0.5rem", borderRadius: 4, border: "1px solid #222", background: "#222", color: "#00ff00", marginBottom: 8, resize: "none" }} />
-          <button type="submit" style={{ background: "#00ff00", color: "#181818", fontWeight: 700, border: "none", borderRadius: 4, padding: "0.75rem", marginTop: 8, cursor: "pointer" }}>Send Message</button>
-          {submitted && <div style={{ color: "#00ff00", marginTop: 8 }}>Thank you! Your message has been sent successfully.</div>}
-        </form>
       </div>
-    </section>
+    </div>
   );
 };
 

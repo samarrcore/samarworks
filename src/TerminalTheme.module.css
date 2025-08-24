@@ -9,6 +9,12 @@
   --terminal-green: #00FF00;
   --terminal-bg: #111;
   --terminal-font: 'Cascadia Code', 'Consolas', 'Fira Mono', monospace;
+  --terminal-light-green: #00aa00;
+  --terminal-dark-green: #008800;
+  --terminal-gray: #333;
+  --terminal-light-gray: #666;
+  --terminal-white: #ffffff;
+  --terminal-border: #444;
 }
 
 html, body, #root {
@@ -29,4 +35,614 @@ html, body, #root {
   padding: 0;
   margin: 0;
   letter-spacing: 0.02em;
+}
+
+/* Page Components */
+.page {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--terminal-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  height: 100%;
+  max-height: 800px;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminalWindow {
+  flex: 1;
+  background: #0c0c0c;
+  border: 2px solid var(--terminal-border);
+  border-radius: 12px;
+  box-shadow: 0 0 30px rgba(0, 255, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminalHeader {
+  background: #1a1a1a;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--terminal-border);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.terminalButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.terminalButton {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.close { background: #ff5f57; }
+.minimize { background: #ffbd2e; }
+.maximize { background: #28ca42; }
+
+.terminalTitle {
+  color: #888;
+  font-size: 0.875rem;
+  margin-left: 1rem;
+  font-weight: 500;
+}
+
+.terminalContent {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  color: var(--terminal-green);
+}
+
+.commandBlock {
+  margin-bottom: 2rem;
+}
+
+.commandLine {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.prompt {
+  color: var(--terminal-light-green);
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+.command {
+  color: var(--terminal-white);
+  margin-left: 0.5rem;
+}
+
+.cursor {
+  color: var(--terminal-green);
+  animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.output {
+  color: var(--terminal-green);
+  margin-left: 1rem;
+  line-height: 1.6;
+}
+
+.output p {
+  margin-bottom: 0.5rem;
+}
+
+/* Info Block Styles */
+.infoBlock {
+  background: #0a0a0a;
+  border: 1px solid var(--terminal-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.infoTitle {
+  color: var(--terminal-green);
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--terminal-border);
+  padding-bottom: 0.5rem;
+}
+
+.infoGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.infoItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #222;
+}
+
+.infoLabel {
+  color: #888;
+  font-weight: 500;
+}
+
+.infoValue {
+  color: var(--terminal-green);
+  font-weight: 600;
+}
+
+/* Skills Specific Styles */
+.skillsHeader {
+  margin-bottom: 2rem;
+}
+
+.skillsHeader p {
+  margin-bottom: 0.5rem;
+}
+
+.divider {
+  color: var(--terminal-border);
+  margin: 1rem 0;
+  font-family: monospace;
+}
+
+.skillCategory {
+  margin-bottom: 2rem;
+}
+
+.categoryTitle {
+  color: var(--terminal-green);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.skillGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-left: 1rem;
+}
+
+.skillItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #0a0a0a;
+  border: 1px solid var(--terminal-border);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  transition: all 0.3s ease;
+}
+
+.skillItem:hover {
+  border-color: var(--terminal-green);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+}
+
+.skillIcon {
+  font-size: 1.5rem;
+  color: var(--terminal-green);
+}
+
+.skillInfo {
+  flex: 1;
+}
+
+.skillName {
+  font-weight: 600;
+  color: var(--terminal-white);
+}
+
+.skillLevel {
+  font-size: 0.875rem;
+  color: var(--terminal-light-green);
+}
+
+/* Navigation Help */
+.navigationHelp {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--terminal-border);
+}
+
+.navigationHelp p {
+  margin-bottom: 1rem;
+  color: #888;
+}
+
+.commandList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.clickableCommand {
+  background: #222;
+  border: 1px solid var(--terminal-border);
+  border-radius: 4px;
+  padding: 0.5rem 0.75rem;
+  color: var(--terminal-green);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.875rem;
+}
+
+.clickableCommand:hover {
+  background: var(--terminal-green);
+  color: var(--terminal-bg);
+  border-color: var(--terminal-green);
+}
+
+/* Portfolio Specific Styles */
+.portfolioHeader {
+  margin-bottom: 2rem;
+}
+
+.portfolioHeader p {
+  margin-bottom: 0.5rem;
+}
+
+.projectGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-left: 1rem;
+}
+
+.projectCard {
+  background: #0a0a0a;
+  border: 1px solid var(--terminal-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.projectCard:hover {
+  border-color: var(--terminal-green);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+}
+
+.projectHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.projectIcon {
+  font-size: 1.5rem;
+}
+
+.projectTitle {
+  color: var(--terminal-white);
+  font-size: 1.1rem;
+  font-weight: 600;
+  flex: 1;
+}
+
+.projectCategory {
+  color: var(--terminal-light-green);
+  font-size: 0.875rem;
+  background: #222;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.projectDescription {
+  color: #ccc;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.techStack {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.techTag {
+  background: rgba(0, 255, 0, 0.1);
+  border: 1px solid var(--terminal-green);
+  color: var(--terminal-green);
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+}
+
+.projectLinks {
+  display: flex;
+  gap: 1rem;
+}
+
+.projectLink {
+  color: var(--terminal-green);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.projectLink:hover {
+  color: var(--terminal-white);
+  text-decoration: underline;
+}
+
+/* Services Specific Styles */
+.servicesHeader {
+  margin-bottom: 2rem;
+}
+
+.servicesHeader p {
+  margin-bottom: 0.5rem;
+}
+
+.servicesGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-left: 1rem;
+}
+
+.serviceCard {
+  background: #0a0a0a;
+  border: 1px solid var(--terminal-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+  transition: all 0.3s ease;
+}
+
+.serviceCard:hover {
+  border-color: var(--terminal-green);
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.2);
+}
+
+.serviceHeader {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.serviceIcon {
+  font-size: 2rem;
+  color: var(--terminal-green);
+  margin-top: 0.25rem;
+}
+
+.serviceInfo {
+  flex: 1;
+}
+
+.serviceName {
+  color: var(--terminal-white);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.serviceType {
+  color: var(--terminal-light-green);
+  font-size: 0.875rem;
+  background: #222;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  display: inline-block;
+}
+
+.serviceDescription {
+  color: #ccc;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.serviceFeatures {
+  border-top: 1px solid #333;
+  padding-top: 1rem;
+}
+
+.featuresTitle {
+  color: var(--terminal-green);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.featureItem {
+  color: #ccc;
+  font-size: 0.825rem;
+  margin-bottom: 0.25rem;
+  padding-left: 0.5rem;
+}
+
+/* Contact Specific Styles */
+.contactHeader {
+  margin-bottom: 2rem;
+}
+
+.contactHeader p {
+  margin-bottom: 0.5rem;
+}
+
+.contactLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-left: 1rem;
+}
+
+@media (max-width: 768px) {
+  .contactLayout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.contactSectionTitle {
+  color: var(--terminal-green);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid var(--terminal-border);
+  padding-bottom: 0.5rem;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #0a0a0a;
+  border: 1px solid var(--terminal-border);
+  border-radius: 6px;
+  padding: 1rem;
+  transition: all 0.3s ease;
+}
+
+.contactItem:hover {
+  border-color: var(--terminal-green);
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.1);
+}
+
+.contactIcon {
+  font-size: 1.25rem;
+  color: var(--terminal-green);
+  min-width: 24px;
+}
+
+.contactDetails {
+  flex: 1;
+}
+
+.contactLabel {
+  color: var(--terminal-green);
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.contactValue {
+  color: #ccc;
+  font-size: 0.875rem;
+}
+
+.contactLink {
+  color: var(--terminal-white);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color 0.3s ease;
+}
+
+.contactLink:hover {
+  color: var(--terminal-green);
+  text-decoration: underline;
+}
+
+.contactForm {
+  background: #0a0a0a;
+  border: 1px solid var(--terminal-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.messageForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formLabel {
+  color: var(--terminal-green);
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.formInput,
+.formTextarea {
+  background: #111;
+  border: 1px solid var(--terminal-border);
+  border-radius: 4px;
+  padding: 0.75rem;
+  color: var(--terminal-white);
+  font-family: inherit;
+  font-size: 0.875rem;
+  transition: border-color 0.3s ease;
+}
+
+.formInput:focus,
+.formTextarea:focus {
+  outline: none;
+  border-color: var(--terminal-green);
+  box-shadow: 0 0 5px rgba(0, 255, 0, 0.2);
+}
+
+.formTextarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.formButton {
+  background: var(--terminal-green);
+  color: var(--terminal-bg);
+  border: none;
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  font-family: inherit;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.formButton:hover {
+  background: var(--terminal-white);
+  transform: translateY(-1px);
+}
+
+.formSuccess {
+  color: var(--terminal-green);
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 0.5rem;
+  background: rgba(0, 255, 0, 0.1);
+  border: 1px solid var(--terminal-green);
+  border-radius: 4px;
 }
