@@ -162,9 +162,6 @@ const Home = ({ onNavigate, pendingCommand }) => {
               />
               <span className={terminalStyles.cursor}>|</span>
             </div>
-            <div className={terminalStyles.helpText}>
-              💡 Try typing: help, about, portfolio, skills, services, contact
-            </div>
           </div>
         </div>
       </div>
