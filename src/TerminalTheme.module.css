@@ -646,3 +646,32 @@ html, body, #root {
   border: 1px solid var(--terminal-green);
   border-radius: 4px;
 }
+
+.formError {
+  color: #ff5f57;
+  font-size: 0.875rem;
+  text-align: center;
+  padding: 0.5rem;
+  background: rgba(255, 95, 87, 0.1);
+  border: 1px solid #ff5f57;
+  border-radius: 4px;
+}
+
+.formButton:disabled {
+  background: #444;
+  color: #888;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.formButton:disabled:hover {
+  background: #444;
+  transform: none;
+}
+
+.formInput:disabled,
+.formTextarea:disabled {
+  background: #0a0a0a;
+  color: #666;
+  cursor: not-allowed;
+}

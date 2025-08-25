@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FaEnvelope, FaPhone, FaLinkedin, FaGithub, FaMapMarkerAlt } from "react-icons/fa";
+import emailjs from '@emailjs/browser';
 import styles from "../TerminalTheme.module.css";
 
 const contactInfo = [
@@ -44,8 +45,11 @@ const Contact = ({ onNavigate }) => {
   const [displayedCommand, setDisplayedCommand] = useState("");
   const [showOutput, setShowOutput] = useState(false);
   const [animatedContacts, setAnimatedContacts] = useState([]);
-  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [form, setForm] = useState({ user_name: "", user_email: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+  const formRef = useRef();
   
   const command = "cat contact.vcard";
 
@@ -75,13 +79,38 @@ const Contact = ({ onNavigate }) => {
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+    // Clear error when user starts typing
+    if (error) setError("");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setSubmitted(true);
-    setForm({ name: "", email: "", message: "" });
-    setTimeout(() => setSubmitted(false), 3000);
+    setSending(true);
+    setError("");
+
+    // EmailJS configuration
+    const serviceId = 'default_service'; // You'll need to set this in EmailJS dashboard
+    const templateId = 'template_rach02q';
+    const publicKey = 'mgLpbuGgBZyyG_NvE';
+
+    emailjs
+      .sendForm(serviceId, templateId, formRef.current, {
+        publicKey: publicKey,
+      })
+      .then(
+        () => {
+          console.log('SUCCESS!');
+          setSubmitted(true);
+          setForm({ user_name: "", user_email: "", message: "" });
+          setSending(false);
+          setTimeout(() => setSubmitted(false), 5000);
+        },
+        (error) => {
+          console.log('FAILED...', error.text);
+          setError('Failed to send message. Please try again or contact me directly.');
+          setSending(false);
+        },
+      );
   };
 
   return (
@@ -142,16 +171,17 @@ const Contact = ({ onNavigate }) => {
 
                     <div className={styles.contactForm}>
                       <h3 className={styles.contactSectionTitle}>Send Message</h3>
-                      <form onSubmit={handleSubmit} className={styles.messageForm}>
+                      <form ref={formRef} onSubmit={handleSubmit} className={styles.messageForm}>
                         <div className={styles.formGroup}>
                           <label className={styles.formLabel}>Name:</label>
                           <input 
                             type="text" 
-                            name="name" 
-                            value={form.name} 
+                            name="user_name" 
+                            value={form.user_name} 
                             onChange={handleChange} 
                             required 
                             className={styles.formInput}
+                            disabled={sending}
                           />
                         </div>
                         
@@ -159,11 +189,12 @@ const Contact = ({ onNavigate }) => {
                           <label className={styles.formLabel}>Email:</label>
                           <input 
                             type="email" 
-                            name="email" 
-                            value={form.email} 
+                            name="user_email" 
+                            value={form.user_email} 
                             onChange={handleChange} 
                             required 
                             className={styles.formInput}
+                            disabled={sending}
                           />
                         </div>
                         
@@ -176,16 +207,23 @@ const Contact = ({ onNavigate }) => {
                             rows={4} 
                             required 
                             className={styles.formTextarea}
+                            disabled={sending}
                           />
                         </div>
                         
-                        <button type="submit" className={styles.formButton}>
-                          Send Message
+                        <button type="submit" className={styles.formButton} disabled={sending}>
+                          {sending ? 'Sending...' : 'Send Message'}
                         </button>
                         
                         {submitted && (
                           <div className={styles.formSuccess}>
-                            ✓ Message sent successfully!
+                            ✓ Message sent successfully! I'll get back to you soon.
+                          </div>
+                        )}
+                        
+                        {error && (
+                          <div className={styles.formError}>
+                            ✗ {error}
                           </div>
                         )}
                       </form>
