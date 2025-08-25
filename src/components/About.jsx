@@ -10,7 +10,7 @@ const About = ({ onNavigate }) => {
   const [showCursor3, setShowCursor3] = useState(false);
   
   const text1 = "Hi, I'm Samar Pratap Singh.";
-  const text2 = "I'm a passionate developer who loves building innovative solutions.";
+  const text2 = "I'm a student| developer | designer trying to learn new things.";
   const text3 = "Welcome to my digital workspace - explore using terminal commands!";
 
   useEffect(() => {
@@ -113,7 +113,7 @@ const About = ({ onNavigate }) => {
                 </div>
                 <div className={styles.infoItem}>
                   <span className={styles.infoLabel}>Experience:</span>
-                  <span className={styles.infoValue}>5+ Years</span>
+                  <span className={styles.infoValue}>5+ months</span>
                 </div>
                 <div className={styles.infoItem}>
                   <span className={styles.infoLabel}>Location:</span>

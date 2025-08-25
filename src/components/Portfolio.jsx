@@ -14,15 +14,15 @@ const projects = [
     title: "Simon Says Game",
     description: "An interactive memory game with difficulty levels, flashing patterns, and level tracking system.",
     tech: ["JavaScript", "HTML", "CSS", "Game Logic"],
-    github: "https://github.com/samarrcore/simon-says",
+    github: "https://github.com/samarrcore/simon-says-game",
     category: "Game"
   },
   {
-    title: "Big Tac Toe",
-    description: "A team-based advanced tic-tac-toe game with nested boards and strategic gameplay.",
-    tech: ["JavaScript", "HTML", "CSS", "Algorithm"],
-    github: "https://github.com/samarrcore/big-tac-toe",
-    category: "Game"
+    title: "Movie Recommender",
+    description: "A personalized movie recommender system that utilizes advanced algorithms to suggest films tailored to individual viewing preferences, delivering dynamic recommendations through a modern, interactive web interface.",
+    tech: ["Pandas", "Numpy", "Tmdb APIs" ,"Algorithm"],
+    github: "https://github.com/samarrcore/movie-recommender",
+    category: "Recommender"
   },
 ];
 

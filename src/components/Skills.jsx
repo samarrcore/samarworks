@@ -4,15 +4,15 @@ import { SiMongodb, SiMysql } from "react-icons/si";
 import styles from "../TerminalTheme.module.css";
 
 const skills = [
-  { name: "C", icon: <FaCuttlefish />, category: "Programming", level: "Advanced" },
-  { name: "C++", icon: <FaCuttlefish />, category: "Programming", level: "Advanced" },
-  { name: "Java", icon: <FaJava />, category: "Programming", level: "Intermediate" },
-  { name: "Python", icon: <FaPython />, category: "Programming", level: "Advanced" },
+  { name: "C", icon: <FaCuttlefish />, category: "Programming", level: "Intermediate" },
+  { name: "C++", icon: <FaCuttlefish />, category: "Programming", level: "Intermediate" },
+  { name: "Java", icon: <FaJava />, category: "Programming", level: "Beginner" },
+  { name: "Python", icon: <FaPython />, category: "Programming", level: "Intermediate" },
   { name: "HTML", icon: <FaHtml5 />, category: "Web", level: "Expert" },
   { name: "CSS", icon: <FaCss3Alt />, category: "Web", level: "Expert" },
-  { name: "JavaScript", icon: <FaJs />, category: "Web", level: "Advanced" },
-  { name: "React.js", icon: <FaReact />, category: "Web", level: "Advanced" },
-  { name: "Node.js", icon: <FaNodeJs />, category: "Backend", level: "Intermediate" },
+  { name: "JavaScript", icon: <FaJs />, category: "Web", level: "Intermediate" },
+  { name: "React.js", icon: <FaReact />, category: "Web", level: "Beginner" },
+  { name: "Node.js", icon: <FaNodeJs />, category: "Backend", level: "Beginner" },
   { name: "MySQL", icon: <SiMysql />, category: "Database", level: "Advanced" },
   { name: "MongoDB", icon: <SiMongodb />, category: "Database", level: "Intermediate" },
   { name: "Leadership", icon: <FaUsers />, category: "Soft Skills", level: "Advanced" },
