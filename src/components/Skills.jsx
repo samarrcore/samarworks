@@ -1,119 +1,181 @@
-import React, { useState, useEffect } from "react";
-import { FaCuttlefish, FaJava, FaPython, FaHtml5, FaCss3Alt, FaJs, FaReact, FaNodeJs, FaUsers, FaComments, FaClock } from "react-icons/fa";
-import { SiMongodb, SiMysql } from "react-icons/si";
-import styles from "../TerminalTheme.module.css";
+import React, { useState } from "react";
+import { sound } from "../utils/audio";
+import { 
+  FaCuttlefish, 
+  FaJava, 
+  FaPython, 
+  FaHtml5, 
+  FaCss3Alt, 
+  FaJs, 
+  FaReact, 
+  FaNodeJs, 
+  FaUsers, 
+  FaComments, 
+  FaClock,
+  FaTerminal,
+  FaFilter,
+  FaSearch
+} from "react-icons/fa";
+import { SiMongodb, SiMysql, SiTailwindcss, SiGit, SiVite } from "react-icons/si";
 
-const skills = [
-  { name: "C", icon: <FaCuttlefish />, category: "Programming", level: "Intermediate" },
-  { name: "C++", icon: <FaCuttlefish />, category: "Programming", level: "Intermediate" },
-  { name: "Java", icon: <FaJava />, category: "Programming", level: "Beginner" },
-  { name: "Python", icon: <FaPython />, category: "Programming", level: "Intermediate" },
-  { name: "HTML", icon: <FaHtml5 />, category: "Web", level: "Expert" },
-  { name: "CSS", icon: <FaCss3Alt />, category: "Web", level: "Expert" },
-  { name: "JavaScript", icon: <FaJs />, category: "Web", level: "Intermediate" },
-  { name: "React.js", icon: <FaReact />, category: "Web", level: "Beginner" },
-  { name: "Node.js", icon: <FaNodeJs />, category: "Backend", level: "Beginner" },
-  { name: "MySQL", icon: <SiMysql />, category: "Database", level: "Advanced" },
-  { name: "MongoDB", icon: <SiMongodb />, category: "Database", level: "Intermediate" },
-  { name: "Leadership", icon: <FaUsers />, category: "Soft Skills", level: "Advanced" },
-  { name: "Communication", icon: <FaComments />, category: "Soft Skills", level: "Expert" },
-  { name: "Time Management", icon: <FaClock />, category: "Soft Skills", level: "Advanced" },
+const SKILLS_DATA = [
+  { name: "C", icon: <FaCuttlefish />, category: "Languages", level: "Intermediate", percent: 75, perm: "-rwxr-xr-x", size: "48KB" },
+  { name: "C++", icon: <FaCuttlefish />, category: "Languages", level: "Intermediate", percent: 75, perm: "-rwxr-xr-x", size: "64KB" },
+  { name: "Python", icon: <FaPython />, category: "Languages", level: "Advanced", percent: 85, perm: "-rwxr-xr-x", size: "112KB" },
+  { name: "Java", icon: <FaJava />, category: "Languages", level: "Proficient", percent: 65, perm: "-rwxr-xr-x", size: "88KB" },
+  { name: "JavaScript (ES6+)", icon: <FaJs />, category: "Frontend", level: "Advanced", percent: 90, perm: "-rwxr-xr-x", size: "140KB" },
+  { name: "React 19", icon: <FaReact />, category: "Frontend", level: "Advanced", percent: 85, perm: "-rwxr-xr-x", size: "220KB" },
+  { name: "HTML5 / Semantics", icon: <FaHtml5 />, category: "Frontend", level: "Expert", percent: 95, perm: "-rw-r--r--", size: "32KB" },
+  { name: "CSS3 / Modern Layouts", icon: <FaCss3Alt />, category: "Frontend", level: "Expert", percent: 95, perm: "-rw-r--r--", size: "54KB" },
+  { name: "Tailwind CSS", icon: <SiTailwindcss />, category: "Frontend", level: "Advanced", percent: 90, perm: "-rw-r--r--", size: "96KB" },
+  { name: "Vite Bundler", icon: <SiVite />, category: "Frontend", level: "Advanced", percent: 85, perm: "-rwxr-xr-x", size: "40KB" },
+  { name: "Node.js", icon: <FaNodeJs />, category: "Backend", level: "Intermediate", percent: 70, perm: "-rwxr-xr-x", size: "180KB" },
+  { name: "MySQL", icon: <SiMysql />, category: "Database", level: "Advanced", percent: 85, perm: "-rw-r--r--", size: "160KB" },
+  { name: "MongoDB", icon: <SiMongodb />, category: "Database", level: "Intermediate", percent: 75, perm: "-rw-r--r--", size: "135KB" },
+  { name: "Git & Version Control", icon: <SiGit />, category: "Tools", level: "Advanced", percent: 88, perm: "-rwxr-xr-x", size: "90KB" },
+  { name: "Technical Communication", icon: <FaComments />, category: "Soft Skills", level: "Expert", percent: 95, perm: "-rw-r--r--", size: "CORE" },
+  { name: "Project Leadership", icon: <FaUsers />, category: "Soft Skills", level: "Advanced", percent: 85, perm: "-rw-r--r--", size: "CORE" },
+  { name: "Agile Time Management", icon: <FaClock />, category: "Soft Skills", level: "Advanced", percent: 90, perm: "-rw-r--r--", size: "CORE" },
 ];
 
+const CATEGORIES = ["ALL", "Languages", "Frontend", "Backend", "Database", "Tools", "Soft Skills"];
+
 const Skills = ({ onNavigate }) => {
-  const [displayedCommand, setDisplayedCommand] = useState("");
-  const [showOutput, setShowOutput] = useState(false);
-  const [animatedSkills, setAnimatedSkills] = useState([]);
-  
-  const command = "ls -la skills/";
+  const [selectedCategory, setSelectedCategory] = useState("ALL");
+  const [searchQuery, setSearchQuery] = useState("");
 
-  useEffect(() => {
-    // Type the command
-    let i = 0;
-    const typing = setInterval(() => {
-      if (i < command.length) {
-        setDisplayedCommand(command.slice(0, i + 1));
-        i++;
-      } else {
-        clearInterval(typing);
-        setTimeout(() => {
-          setShowOutput(true);
-          // Animate skills appearing
-          skills.forEach((skill, index) => {
-            setTimeout(() => {
-              setAnimatedSkills(prev => [...prev, skill]);
-            }, index * 100);
-          });
-        }, 500);
-      }
-    }, 50);
+  const handleFilter = (cat) => {
+    sound.playKey();
+    setSelectedCategory(cat);
+  };
 
-    return () => clearInterval(typing);
-  }, []);
+  const filtered = SKILLS_DATA.filter((item) => {
+    const matchCat = selectedCategory === "ALL" || item.category === selectedCategory;
+    const matchSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        item.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                        item.level.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchCat && matchSearch;
+  });
 
-  const categories = [...new Set(skills.map(skill => skill.category))];
+  const renderGauge = (pct) => {
+    const totalBars = 10;
+    const filledBars = Math.round((pct / 100) * totalBars);
+    const emptyBars = totalBars - filledBars;
+    return `[${"█".repeat(filledBars)}${"░".repeat(emptyBars)}]`;
+  };
 
   return (
-    <div className={styles.page}>
-      <div className={styles.container}>
-        <div className={styles.terminalWindow}>
-          <div className={styles.terminalHeader}>
-            <div className={styles.terminalButtons}>
-              <div className={`${styles.terminalButton} ${styles.close}`}></div>
-              <div className={`${styles.terminalButton} ${styles.minimize}`}></div>
-              <div className={`${styles.terminalButton} ${styles.maximize}`}></div>
-            </div>
-            <div className={styles.terminalTitle}>Skills - samar@portfolio:~/skills</div>
+    <div className="terminal-page sub-page skills-page">
+      <div className="terminal-window">
+        {/* Terminal Window Header */}
+        <div className="terminal-window-header">
+          <div className="window-dots">
+            <span className="dot dot-close" onClick={() => onNavigate("home")}></span>
+            <span className="dot dot-min"></span>
+            <span className="dot dot-max"></span>
           </div>
-          
-          <div className={styles.terminalContent}>
-            <div className={styles.commandBlock}>
-              <div className={styles.commandLine}>
-                <span className={styles.prompt}>samar@portfolio:~/skills$</span>
-                <span className={styles.command}>{displayedCommand}</span>
-                {displayedCommand.length < command.length && <span className={styles.cursor}>|</span>}
-              </div>
-              
-              {showOutput && (
-                <div className={styles.output}>
-                  <div className={styles.skillsHeader}>
-                    <p>🛠️  Technical Skills & Expertise Directory</p>
-                    <p>Total: {skills.length} skills across {categories.length} categories</p>
-                    <div className={styles.divider}>{'─'.repeat(60)}</div>
-                  </div>
+          <div className="window-title">
+            <FaTerminal className="title-icon" />
+            samar@samarworks-os: ~/skills (ls -la skills/)
+          </div>
+          <div className="window-status-tag">PKGS: {SKILLS_DATA.length}</div>
+        </div>
 
-                  {categories.map((category) => (
-                    <div key={category} className={styles.skillCategory}>
-                      <h3 className={styles.categoryTitle}>📁 {category}/</h3>
-                      <div className={styles.skillGrid}>
-                        {skills
-                          .filter(skill => skill.category === category)
-                          .filter(skill => animatedSkills.includes(skill))
-                          .map(skill => (
-                            <div key={skill.name} className={styles.skillItem}>
-                              <div className={styles.skillIcon}>{skill.icon}</div>
-                              <div className={styles.skillInfo}>
-                                <div className={styles.skillName}>{skill.name}</div>
-                                <div className={styles.skillLevel}>[{skill.level}]</div>
-                              </div>
-                            </div>
-                          ))}
-                      </div>
-                    </div>
-                  ))}
+        {/* Content Body */}
+        <div className="terminal-body">
+          {/* CLI Command Line */}
+          <div className="cli-prompt-line">
+            <span className="prompt-user">samar@dev</span>
+            <span className="prompt-sep">:</span>
+            <span className="prompt-path">~/skills</span>
+            <span className="prompt-char">$</span>
+            <span className="prompt-text">
+              ls -la --category="{selectedCategory}" {searchQuery ? `| grep "${searchQuery}"` : ""}
+            </span>
+          </div>
+
+          {/* Interactive Filters & Search */}
+          <div className="skills-toolbar">
+            <div className="filter-pill-group">
+              <span className="filter-label"><FaFilter /> FILTER:</span>
+              {CATEGORIES.map(cat => (
+                <button
+                  key={cat}
+                  onClick={() => handleFilter(cat)}
+                  className={`filter-pill ${selectedCategory === cat ? "active" : ""}`}
+                >
+                  {cat === "ALL" ? "--all" : `--${cat.toLowerCase().replace(" ", "-")}`}
+                </button>
+              ))}
+            </div>
+
+            <div className="search-box">
+              <FaSearch className="search-icon" />
+              <input
+                type="text"
+                placeholder="grep skills..."
+                value={searchQuery}
+                onChange={(e) => {
+                  sound.playKey();
+                  setSearchQuery(e.target.value);
+                }}
+                className="search-input"
+              />
+            </div>
+          </div>
+
+          {/* Skills Table / Directory Stream */}
+          <div className="terminal-card">
+            <div className="directory-header-row">
+              <span className="col-perm">PERMISSIONS</span>
+              <span className="col-size">SIZE</span>
+              <span className="col-name">PACKAGE / SKILL</span>
+              <span className="col-cat">CATEGORY</span>
+              <span className="col-gauge">PROFICIENCY GAUGE</span>
+              <span className="col-level">STATUS</span>
+            </div>
+
+            <div className="skills-directory-list">
+              {filtered.length === 0 ? (
+                <div className="empty-results">
+                  No packages matched expression: <code>grep "{searchQuery}"</code>
                 </div>
+              ) : (
+                filtered.map((skill) => (
+                  <div key={skill.name} className="skill-row">
+                    <span className="col-perm">{skill.perm}</span>
+                    <span className="col-size">{skill.size}</span>
+                    <div className="col-name">
+                      <span className="skill-item-icon">{skill.icon}</span>
+                      <span className="skill-item-text">{skill.name}</span>
+                    </div>
+                    <span className="col-cat tag-badge">{skill.category}</span>
+                    <div className="col-gauge">
+                      <span className="gauge-ascii">{renderGauge(skill.percent)}</span>
+                      <span className="gauge-pct">{skill.percent}%</span>
+                    </div>
+                    <span className={`col-level status-badge ${skill.level.toLowerCase()}`}>
+                      [{skill.level}]
+                    </span>
+                  </div>
+                ))
               )}
             </div>
+          </div>
 
-            <div className={styles.navigationHelp}>
-              <p>💡 Use terminal commands to navigate:</p>
-              <div className={styles.commandList}>
-                <span onClick={() => onNavigate('home')} className={styles.clickableCommand}>home</span>
-                <span onClick={() => onNavigate('about')} className={styles.clickableCommand}>about</span>
-                <span onClick={() => onNavigate('portfolio')} className={styles.clickableCommand}>portfolio</span>
-                <span onClick={() => onNavigate('services')} className={styles.clickableCommand}>services</span>
-                <span onClick={() => onNavigate('contact')} className={styles.clickableCommand}>contact</span>
-              </div>
+          {/* Quick Jump Bar */}
+          <div className="subpage-nav-bar">
+            <span className="nav-bar-label">SYSTEM NAVIGATION:</span>
+            <div className="nav-bar-buttons">
+              <button onClick={() => onNavigate("portfolio")} className="nav-pill">
+                $ git log projects/
+              </button>
+              <button onClick={() => onNavigate("services")} className="nav-pill">
+                $ systemctl services
+              </button>
+              <button onClick={() => onNavigate("contact")} className="nav-pill">
+                $ contact --compose
+              </button>
             </div>
           </div>
         </div>

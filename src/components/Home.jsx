@@ -1,171 +1,371 @@
 import React, { useState, useEffect, useRef } from "react";
-import styles from "../TerminalTheme.module.css";
-import terminalStyles from "./InteractiveTerminal.module.css";
+import { sound } from "../utils/audio";
+import { 
+  FaTerminal, 
+  FaUser, 
+  FaCode, 
+  FaProjectDiagram, 
+  FaTools, 
+  FaPaperPlane, 
+  FaBolt, 
+  FaPlay, 
+  FaTrashAlt,
+  FaCheckCircle
+} from "react-icons/fa";
 
-const commands = {
-  help: "Available commands: help, about, portfolio, skills, services, contact, home, clear",
-  about: "Loading About page...",
-  portfolio: "Loading Portfolio page...",
-  skills: "Loading Skills page...",
-  services: "Loading Services page...",
-  contact: "Loading Contact page...",
-  home: "Returning to home terminal...",
-  clear: "CLEAR"
-};
+const ASCII_LOGO = `
+ ███████╗ █████╗ ███╗   ███╗ █████╗ ██████╗ ██╗    ██╗ ██████╗ ██████╗ ██╗  ██╗███████╗
+ ██╔════╝██╔══██╗████╗ ████║██╔══██╗██╔══██╗██║    ██║██╔═══██╗██╔══██╗██║ ██╔╝██╔════╝
+ ███████╗███████║██╔████╔██║███████║██████╔╝██║ █╗ ██║██║   ██║██████╔╝█████╔╝ ███████╗
+ ╚════██║██╔══██║██║╚██╔╝██║██╔══██║██╔══██╗██║███╗██║██║   ██║██╔══██╗██╔═██╗ ╚════██║
+ ███████║██║  ██║██║ ╚═╝ ██║██║  ██║██║  ██║╚███╔███╔╝╚██████╔╝██║  ██║██║  ██╗███████║
+ ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚══╝╚══╝  ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝
+`;
 
-const Home = ({ onNavigate, pendingCommand }) => {
-  const [history, setHistory] = useState([
-    { type: "output", content: "Welcome to SamarWorks Terminal v2.0" },
-    { type: "output", content: "🌟 Explore the portfolio using terminal commands!" },
-    { type: "output", content: "Type 'help' to see available commands" }
-  ]);
-  const [currentInput, setCurrentInput] = useState("");
-  const [isAutoTyping, setIsAutoTyping] = useState(false);
+const SYSTEM_SPECS = [
+  { label: "DEVELOPER", val: "Samar Pratap Singh" },
+  { label: "SYSTEM", val: "SamarOS v2.5 x86_64" },
+  { label: "CORE FOCUS", val: "React 19 / Modern Frontend / Clean UX" },
+  { label: "STATUS", val: "Available for Hire & Collaboration" },
+  { label: "UPTIME", val: "99.98% (High Performance)" },
+];
+
+const INITIAL_HISTORY = [
+  { type: "banner", content: ASCII_LOGO },
+  { 
+    type: "system", 
+    content: "⚡ Terminal Workstation Initialized. Welcome to SamarWorks Interactive Shell." 
+  },
+  { 
+    type: "hint", 
+    content: "💡 Tip: Type 'help' for command list, or click any directive below to navigate." 
+  }
+];
+
+const Home = ({ onNavigate, onTriggerSpecial }) => {
+  const [history, setHistory] = useState(INITIAL_HISTORY);
+  const [inputVal, setInputVal] = useState("");
+  const [cmdHistory, setCmdHistory] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const terminalEndRef = useRef(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (inputRef.current && !isAutoTyping) {
-      inputRef.current.focus();
-    }
-  }, [isAutoTyping]);
+    terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [history]);
 
-  // Handle pending command auto-typing
-  useEffect(() => {
-    if (pendingCommand && !isAutoTyping) {
-      setIsAutoTyping(true);
-      setCurrentInput("");
-      
-      // Auto-type the command
-      let i = 0;
-      const typeInterval = setInterval(() => {
-        if (i < pendingCommand.length) {
-          setCurrentInput(pendingCommand.slice(0, i + 1));
-          i++;
-        } else {
-          clearInterval(typeInterval);
-          // Execute the command after typing is complete
-          setTimeout(() => {
-            executeCommand(pendingCommand);
-            setCurrentInput("");
-            setIsAutoTyping(false);
-          }, 500);
-        }
-      }, 100);
+  const executeCommand = (rawCmd) => {
+    const trimmed = rawCmd.trim();
+    if (!trimmed) return;
 
-      return () => clearInterval(typeInterval);
-    }
-  }, [pendingCommand]);
+    sound.playEnter();
+    const [command, ...args] = trimmed.split(" ");
+    const cmd = command.toLowerCase();
 
-  const executeCommand = (cmd) => {
-    const command = cmd.toLowerCase().trim();
-    
-    // Add command to history
-    setHistory(prev => [...prev, { type: "command", content: `$ ${cmd}` }]);
+    setCmdHistory(prev => [...prev, trimmed]);
+    setHistoryIndex(-1);
 
-    if (command === "clear") {
-      setHistory([
-        { type: "output", content: "Welcome to SamarWorks Terminal v2.0" },
-        { type: "output", content: "🌟 Explore the portfolio using terminal commands!" },
-        { type: "output", content: "Type 'help' to see available commands" }
-      ]);
-      return;
-    }
+    // Append executed command line to history
+    setHistory(prev => [...prev, { type: "command", content: trimmed }]);
 
-    if (commands[command]) {
-      setHistory(prev => [...prev, { type: "output", content: commands[command] }]);
-      
-      // Navigate to pages
-      setTimeout(() => {
-        switch (command) {
-          case "about":
-            onNavigate('about');
-            break;
-          case "portfolio":
-            onNavigate('portfolio');
-            break;
-          case "skills":
-            onNavigate('skills');
-            break;
-          case "services":
-            onNavigate('services');
-            break;
-          case "contact":
-            onNavigate('contact');
-            break;
-          case "home":
-            onNavigate('home');
-            break;
-        }
-      }, 1000);
-    } else {
-      setHistory(prev => [...prev, { type: "output", content: `Command not found: ${command}. Type 'help' for available commands.` }]);
+    switch (cmd) {
+      case "help":
+        setHistory(prev => [
+          ...prev,
+          {
+            type: "output",
+            content: (
+              <div className="cli-help-block">
+                <div className="help-title">AVAILABLE SYSTEM COMMANDS:</div>
+                <div className="help-grid">
+                  <div><code>whoami</code> - Read developer bio & philosophy</div>
+                  <div><code>skills</code> - Inspect tech stack & tools</div>
+                  <div><code>projects</code> - Browse portfolio repository</div>
+                  <div><code>services</code> - View service offerings</div>
+                  <div><code>contact</code> - Send email / view contact info</div>
+                  <div><code>matrix</code> - Launch Matrix digital rain</div>
+                  <div><code>neofetch</code> - Display system architecture specs</div>
+                  <div><code>clear</code> - Flush terminal output buffer</div>
+                  <div><code>date</code> - Print current system timestamp</div>
+                  <div><code>echo &lt;msg&gt;</code> - Echo message to standard output</div>
+                </div>
+              </div>
+            )
+          }
+        ]);
+        break;
+
+      case "clear":
+      case "cls":
+        setHistory([
+          { type: "system", content: "Terminal buffer reset. Type 'help' for commands." }
+        ]);
+        break;
+
+      case "whoami":
+      case "about":
+        setHistory(prev => [
+          ...prev,
+          { type: "output", content: "→ Navigating to developer profile (~/whoami)..." }
+        ]);
+        setTimeout(() => onNavigate("about"), 300);
+        break;
+
+      case "skills":
+        setHistory(prev => [
+          ...prev,
+          { type: "output", content: "→ Accessing technical proficiencies directory (~/skills)..." }
+        ]);
+        setTimeout(() => onNavigate("skills"), 300);
+        break;
+
+      case "projects":
+      case "portfolio":
+        setHistory(prev => [
+          ...prev,
+          { type: "output", content: "→ Inspecting software repositories (~/projects)..." }
+        ]);
+        setTimeout(() => onNavigate("portfolio"), 300);
+        break;
+
+      case "services":
+        setHistory(prev => [
+          ...prev,
+          { type: "output", content: "→ Querying services daemon (~/services)..." }
+        ]);
+        setTimeout(() => onNavigate("services"), 300);
+        break;
+
+      case "contact":
+        setHistory(prev => [
+          ...prev,
+          { type: "output", content: "→ Initializing communication protocol (~/contact)..." }
+        ]);
+        setTimeout(() => onNavigate("contact"), 300);
+        break;
+
+      case "matrix":
+        setHistory(prev => [
+          ...prev,
+          { type: "output", content: "→ Connecting to mainframe stream..." }
+        ]);
+        if (onTriggerSpecial) onTriggerSpecial("matrix");
+        break;
+
+      case "neofetch":
+      case "specs":
+        setHistory(prev => [
+          ...prev,
+          {
+            type: "output",
+            content: (
+              <div className="cli-neofetch">
+                <div className="neofetch-art">
+                  {`   /\\_/\\  \n  ( o.o ) \n   > ^ <  `}
+                </div>
+                <div className="neofetch-data">
+                  <div className="neofetch-row"><span className="neofetch-label">OS:</span> SamarOS GNU/Linux</div>
+                  <div className="neofetch-row"><span className="neofetch-label">Host:</span> Samar Works Devstation</div>
+                  <div className="neofetch-row"><span className="neofetch-label">Kernel:</span> React 19.1 + Vite 7.1</div>
+                  <div className="neofetch-row"><span className="neofetch-label">Shell:</span> SamarCLI 2.5</div>
+                  <div className="neofetch-row"><span className="neofetch-label">Terminal:</span> Cascadia Code High-DPI</div>
+                  <div className="neofetch-row"><span className="neofetch-label">Editor:</span> VS Code / Antigravity</div>
+                </div>
+              </div>
+            )
+          }
+        ]);
+        break;
+
+      case "date":
+        setHistory(prev => [
+          ...prev,
+          { type: "output", content: new Date().toUTCString() }
+        ]);
+        break;
+
+      case "sudo":
+        sound.playError();
+        setHistory(prev => [
+          ...prev,
+          { type: "error", content: "samar is not in the sudoers file. This incident will be reported to Santa 🎅" }
+        ]);
+        break;
+
+      case "echo":
+        setHistory(prev => [
+          ...prev,
+          { type: "output", content: args.join(" ") || "" }
+        ]);
+        break;
+
+      default:
+        sound.playError();
+        setHistory(prev => [
+          ...prev,
+          { 
+            type: "error", 
+            content: `Command not recognized: '${trimmed}'. Type 'help' or click an action below.` 
+          }
+        ]);
     }
   };
 
-  const handleKeyPress = (e) => {
-    if (isAutoTyping) return; // Don't allow manual input during auto-typing
-    
+  const handleKeyDown = (e) => {
+    sound.playKey();
+
     if (e.key === "Enter") {
-      if (currentInput.trim()) {
-        executeCommand(currentInput);
+      executeCommand(inputVal);
+      setInputVal("");
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (cmdHistory.length === 0) return;
+      const nextIdx = historyIndex === -1 ? cmdHistory.length - 1 : Math.max(0, historyIndex - 1);
+      setHistoryIndex(nextIdx);
+      setInputVal(cmdHistory[nextIdx]);
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (historyIndex === -1) return;
+      const nextIdx = historyIndex + 1;
+      if (nextIdx >= cmdHistory.length) {
+        setHistoryIndex(-1);
+        setInputVal("");
+      } else {
+        setHistoryIndex(nextIdx);
+        setInputVal(cmdHistory[nextIdx]);
       }
-      setCurrentInput("");
+    } else if (e.key === "Tab") {
+      e.preventDefault();
+      const candidates = ["whoami", "skills", "projects", "services", "contact", "matrix", "clear", "help", "neofetch"];
+      const match = candidates.find(c => c.startsWith(inputVal.toLowerCase().trim()));
+      if (match) setInputVal(match);
     }
   };
 
-  const handleTerminalClick = () => {
-    if (inputRef.current && !isAutoTyping) {
-      inputRef.current.focus();
-    }
+  const handleQuickAction = (cmd) => {
+    executeCommand(cmd);
   };
 
   return (
-    <section className={styles.terminal} id="home">
-      <div className={terminalStyles.terminalContainer}>
-        <div className={terminalStyles.terminalWindow} onClick={handleTerminalClick}>
-          <div className={terminalStyles.terminalHeader}>
-            <div className={terminalStyles.terminalButtons}>
-              <div className={`${terminalStyles.terminalButton} ${terminalStyles.close}`}></div>
-              <div className={`${terminalStyles.terminalButton} ${terminalStyles.minimize}`}></div>
-              <div className={`${terminalStyles.terminalButton} ${terminalStyles.maximize}`}></div>
-            </div>
-            <div className={terminalStyles.terminalTitle}>samar@portfolio:~</div>
+    <div className="terminal-page home-page">
+      <div className="terminal-window">
+        {/* Terminal Header Chrome */}
+        <div className="terminal-window-header">
+          <div className="window-dots">
+            <span 
+              className="dot dot-close" 
+              onClick={() => {
+                sound.playEnter();
+                setHistory(INITIAL_HISTORY);
+              }}
+              title="Reset terminal"
+            ></span>
+            <span className="dot dot-min" title="Minimize"></span>
+            <span className="dot dot-max" title="Maximize"></span>
           </div>
-          <div className={terminalStyles.terminalBody}>
-            {history.map((item, index) => (
-              <div key={index}>
-                {item.type === "command" ? (
-                  <div className={terminalStyles.terminalLine}>
-                    <span className={terminalStyles.prompt}>samar@portfolio:~$</span>
-                    <span className={terminalStyles.command}>{item.content.substring(2)}</span>
+          <div className="window-title">
+            <FaTerminal className="title-icon" />
+            samar@samarworks-os: ~/portfolio (bash)
+          </div>
+          <div className="window-status-tag">
+            <span className="pulse-green"></span>
+            READY
+          </div>
+        </div>
+
+        {/* Terminal Main Body */}
+        <div className="terminal-body" onClick={() => inputRef.current?.focus()}>
+          {/* Quick System Badge Bar */}
+          <div className="system-overview-card">
+            <div className="specs-list">
+              {SYSTEM_SPECS.map(s => (
+                <div key={s.label} className="spec-badge">
+                  <span className="spec-key">{s.label}:</span>
+                  <span className="spec-val">{s.val}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Interactive Fast Jump Command Bar */}
+          <div className="cli-action-strip">
+            <span className="strip-title">QUICK DIRECTIVES:</span>
+            <button onClick={() => handleQuickAction("whoami")} className="strip-btn">
+              <FaUser /> $ whoami
+            </button>
+            <button onClick={() => handleQuickAction("skills")} className="strip-btn">
+              <FaCode /> $ skills
+            </button>
+            <button onClick={() => handleQuickAction("projects")} className="strip-btn">
+              <FaProjectDiagram /> $ projects
+            </button>
+            <button onClick={() => handleQuickAction("services")} className="strip-btn">
+              <FaTools /> $ services
+            </button>
+            <button onClick={() => handleQuickAction("contact")} className="strip-btn">
+              <FaPaperPlane /> $ contact
+            </button>
+            <button onClick={() => handleQuickAction("matrix")} className="strip-btn highlight">
+              <FaBolt /> $ matrix
+            </button>
+          </div>
+
+          {/* Output Stream */}
+          <div className="history-output-stream">
+            {history.map((item, idx) => (
+              <div key={idx} className={`history-entry ${item.type}`}>
+                {item.type === "command" && (
+                  <div className="cli-prompt-line">
+                    <span className="prompt-user">samar@dev</span>
+                    <span className="prompt-sep">:</span>
+                    <span className="prompt-path">~</span>
+                    <span className="prompt-char">$</span>
+                    <span className="prompt-text">{item.content}</span>
                   </div>
-                ) : (
-                  <div className={terminalStyles.output}>{item.content}</div>
+                )}
+                {item.type === "banner" && (
+                  <pre className="ascii-banner">{item.content}</pre>
+                )}
+                {item.type === "system" && (
+                  <div className="system-msg">{item.content}</div>
+                )}
+                {item.type === "hint" && (
+                  <div className="hint-msg">{item.content}</div>
+                )}
+                {item.type === "output" && (
+                  <div className="output-msg">{item.content}</div>
+                )}
+                {item.type === "error" && (
+                  <div className="error-msg">{item.content}</div>
                 )}
               </div>
             ))}
-            <div className={terminalStyles.inputLine}>
-              <span className={terminalStyles.prompt}>samar@portfolio:~$</span>
-              <input
-                ref={inputRef}
-                className={terminalStyles.terminalInput}
-                value={currentInput}
-                onChange={(e) => !isAutoTyping && setCurrentInput(e.target.value)}
-                onKeyPress={handleKeyPress}
-                autoComplete="off"
-                spellCheck="false"
-                disabled={isAutoTyping}
-                style={{ 
-                  opacity: isAutoTyping ? 0.7 : 1,
-                  pointerEvents: isAutoTyping ? 'none' : 'auto'
-                }}
-              />
-              <span className={terminalStyles.cursor}>|</span>
-            </div>
+            <div ref={terminalEndRef} />
+          </div>
+
+          {/* Active Input Line */}
+          <div className="active-cli-line">
+            <span className="prompt-user">samar@dev</span>
+            <span className="prompt-sep">:</span>
+            <span className="prompt-path">~</span>
+            <span className="prompt-char">$</span>
+            <input
+              ref={inputRef}
+              type="text"
+              className="active-input"
+              value={inputVal}
+              onChange={(e) => setInputVal(e.target.value)}
+              onKeyDown={handleKeyDown}
+              autoFocus
+              spellCheck="false"
+              autoComplete="off"
+              placeholder="Type command ('help', 'whoami', 'skills', 'projects', 'contact')..."
+            />
+            <span className="terminal-blinking-cursor">█</span>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
