@@ -11,14 +11,24 @@ import {
   FaCopy, 
   FaCheck,
   FaExclamationCircle,
-  FaCheckCircle
+  FaCheckCircle,
+  FaUniversity
 } from "react-icons/fa";
+import { SiLeetcode, SiHackerrank } from "react-icons/si";
 import emailjs from "@emailjs/browser";
 
 const CONTACT_CHANNELS = [
   {
+    icon: <FaUniversity />,
+    label: "ACADEMIC EMAIL",
+    value: "ss8073@srmist.edu.in",
+    actionType: "copy",
+    copyText: "ss8073@srmist.edu.in",
+    href: "mailto:ss8073@srmist.edu.in"
+  },
+  {
     icon: <FaEnvelope />,
-    label: "EMAIL DIRECT",
+    label: "DIRECT EMAIL",
     value: "samarpratapyes.01@gmail.com",
     actionType: "copy",
     copyText: "samarpratapyes.01@gmail.com",
@@ -26,7 +36,7 @@ const CONTACT_CHANNELS = [
   },
   {
     icon: <FaPhone />,
-    label: "VOICE / WHATSAPP",
+    label: "VOICE / MOBILE",
     value: "+91 9798499241",
     actionType: "copy",
     copyText: "+919798499241",
@@ -35,7 +45,7 @@ const CONTACT_CHANNELS = [
   {
     icon: <FaMapMarkerAlt />,
     label: "STATION LOCATION",
-    value: "Tiruchirappalli, Tamil Nadu, India",
+    value: "SRM IST-Trichy, Tamil Nadu // Patna, Bihar",
     actionType: "info"
   },
   {
@@ -51,6 +61,20 @@ const CONTACT_CHANNELS = [
     value: "github.com/samarrcore",
     actionType: "link",
     href: "https://github.com/samarrcore"
+  },
+  {
+    icon: <SiLeetcode />,
+    label: "LEETCODE PROFILE",
+    value: "leetcode.com/samarrcore",
+    actionType: "link",
+    href: "https://leetcode.com/u/samarrcore/"
+  },
+  {
+    icon: <SiHackerrank />,
+    label: "HACKERRANK PROFILE",
+    value: "hackerrank.com",
+    actionType: "link",
+    href: "https://www.hackerrank.com"
   }
 ];
 
@@ -100,7 +124,7 @@ const Contact = ({ onNavigate, prefillService }) => {
     setSending(true);
     setErrorMessage("");
 
-    // EmailJS configuration (preserved from original app)
+    // EmailJS configuration
     const serviceId = "default_service";
     const templateId = "template_rach02q";
     const publicKey = "mgLpbuGgBZyyG_NvE";
@@ -119,7 +143,7 @@ const Contact = ({ onNavigate, prefillService }) => {
           console.error("EmailJS Error:", err);
           setSending(false);
           setErrorMessage(
-            "Transmission failed. Please reach out directly to samarpratapyes.01@gmail.com"
+            "Transmission failed. Please reach out directly to ss8073@srmist.edu.in"
           );
         }
       );
@@ -139,7 +163,7 @@ const Contact = ({ onNavigate, prefillService }) => {
             <FaTerminal className="title-icon" />
             samar@samarworks-os: ~/contact (sendmail --ssl)
           </div>
-          <div className="window-status-tag">PORT: 587 (OPEN)</div>
+          <div className="window-status-tag">SRM_IST // OPEN</div>
         </div>
 
         {/* Content Body */}
@@ -205,9 +229,9 @@ const Contact = ({ onNavigate, prefillService }) => {
               </div>
 
               <div className="vcard-terminal-note">
-                <span className="note-prompt">$ info --response-time</span>
+                <span className="note-prompt">$ info --academic-dispatch</span>
                 <p>
-                  Typical response latency: &lt; 12 hours. Open for full-time roles, freelance contracts, and open-source ventures.
+                  SRM IST-Trichy student (Class of 2027). Available for internships, collaborative engineering, and mobile/fullstack projects.
                 </p>
               </div>
             </div>
@@ -224,7 +248,7 @@ const Contact = ({ onNavigate, prefillService }) => {
                   <FaCheckCircle className="success-icon" />
                   <h3>PACKET TRANSMITTED SUCCESSFULLY</h3>
                   <p>
-                    Your message has been encoded and forwarded to Samar's primary inbox. You will receive a response shortly.
+                    Your message has been encoded and forwarded to Samar's inbox. You will receive a response shortly.
                   </p>
                   <button
                     onClick={() => {
@@ -248,7 +272,7 @@ const Contact = ({ onNavigate, prefillService }) => {
                       name="user_name"
                       value={form.user_name}
                       onChange={handleChange}
-                      placeholder="e.g. John Doe / Organization"
+                      placeholder="e.g. Recruiter / Organization"
                       className="terminal-text-input"
                       required
                       autoComplete="off"
@@ -265,7 +289,7 @@ const Contact = ({ onNavigate, prefillService }) => {
                       name="user_email"
                       value={form.user_email}
                       onChange={handleChange}
-                      placeholder="e.g. john@company.com"
+                      placeholder="e.g. recruiter@company.com"
                       className="terminal-text-input"
                       required
                       autoComplete="off"
@@ -282,7 +306,7 @@ const Contact = ({ onNavigate, prefillService }) => {
                       value={form.message}
                       onChange={handleChange}
                       rows={5}
-                      placeholder="Describe your project, role opportunity, or question..."
+                      placeholder="Describe your role opportunity, mobile/web project, or question..."
                       className="terminal-text-area"
                       required
                     ></textarea>

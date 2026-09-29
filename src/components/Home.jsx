@@ -24,10 +24,10 @@ const ASCII_LOGO = `
 
 const SYSTEM_SPECS = [
   { label: "DEVELOPER", val: "Samar Pratap Singh" },
-  { label: "SYSTEM", val: "SamarOS v2.5 x86_64" },
-  { label: "CORE FOCUS", val: "React 19 / Modern Frontend / Clean UX" },
-  { label: "STATUS", val: "Available for Hire & Collaboration" },
-  { label: "UPTIME", val: "99.98% (High Performance)" },
+  { label: "INSTITUTE", val: "SRM IST-Trichy (B.Tech CSE '27) // GPA: 9.2" },
+  { label: "CORE FOCUS", val: "React Native, Expo, Mobile Apps, Python ML" },
+  { label: "CERTIFICATIONS", val: "Oracle OCI 2025 Associate // Microsoft DSA" },
+  { label: "FEATURED WORK", val: "SmartJourney (Mobile GPS AI), Movie-Recommender" },
 ];
 
 const INITIAL_HISTORY = [
@@ -164,12 +164,12 @@ const Home = ({ onNavigate, onTriggerSpecial }) => {
                   {`   /\\_/\\  \n  ( o.o ) \n   > ^ <  `}
                 </div>
                 <div className="neofetch-data">
-                  <div className="neofetch-row"><span className="neofetch-label">OS:</span> SamarOS GNU/Linux</div>
-                  <div className="neofetch-row"><span className="neofetch-label">Host:</span> Samar Works Devstation</div>
-                  <div className="neofetch-row"><span className="neofetch-label">Kernel:</span> React 19.1 + Vite 7.1</div>
-                  <div className="neofetch-row"><span className="neofetch-label">Shell:</span> SamarCLI 2.5</div>
-                  <div className="neofetch-row"><span className="neofetch-label">Terminal:</span> Cascadia Code High-DPI</div>
-                  <div className="neofetch-row"><span className="neofetch-label">Editor:</span> VS Code / Antigravity</div>
+                  <div className="neofetch-row"><span className="neofetch-label">OS:</span> SamarOS GNU/Linux x86_64</div>
+                  <div className="neofetch-row"><span className="neofetch-label">Host:</span> SRM IST-Trichy (B.Tech CSE '27)</div>
+                  <div className="neofetch-row"><span className="neofetch-label">GPA:</span> 9.2 / 10.0 (Dean's Honor Scale)</div>
+                  <div className="neofetch-row"><span className="neofetch-label">Mobile:</span> React Native, Expo, Expo Router</div>
+                  <div className="neofetch-row"><span className="neofetch-label">Web/ML:</span> React 19, TypeScript, Python, Pandas</div>
+                  <div className="neofetch-row"><span className="neofetch-label">Cloud:</span> Oracle Cloud (OCI 2025 Associate)</div>
                 </div>
               </div>
             )
@@ -361,7 +361,6 @@ const Home = ({ onNavigate, onTriggerSpecial }) => {
               autoComplete="off"
               placeholder="Type command ('help', 'whoami', 'skills', 'projects', 'contact')..."
             />
-            <span className="terminal-blinking-cursor">█</span>
           </div>
         </div>
       </div>

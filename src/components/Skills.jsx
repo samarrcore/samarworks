@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { sound } from "../utils/audio";
 import { 
-  FaCuttlefish, 
   FaJava, 
   FaPython, 
   FaHtml5, 
@@ -14,31 +13,45 @@ import {
   FaClock,
   FaTerminal,
   FaFilter,
-  FaSearch
+  FaSearch,
+  FaMobileAlt,
+  FaDatabase,
+  FaFigma
 } from "react-icons/fa";
-import { SiMongodb, SiMysql, SiTailwindcss, SiGit, SiVite } from "react-icons/si";
+import { 
+  SiMongodb, 
+  SiMysql, 
+  SiTailwindcss, 
+  SiGit, 
+  SiTypescript,
+  SiExpo,
+  SiPandas,
+  SiNumpy
+} from "react-icons/si";
 
 const SKILLS_DATA = [
-  { name: "C", icon: <FaCuttlefish />, category: "Languages", level: "Intermediate", percent: 75, perm: "-rwxr-xr-x", size: "48KB" },
-  { name: "C++", icon: <FaCuttlefish />, category: "Languages", level: "Intermediate", percent: 75, perm: "-rwxr-xr-x", size: "64KB" },
-  { name: "Python", icon: <FaPython />, category: "Languages", level: "Advanced", percent: 85, perm: "-rwxr-xr-x", size: "112KB" },
-  { name: "Java", icon: <FaJava />, category: "Languages", level: "Proficient", percent: 65, perm: "-rwxr-xr-x", size: "88KB" },
-  { name: "JavaScript (ES6+)", icon: <FaJs />, category: "Frontend", level: "Advanced", percent: 90, perm: "-rwxr-xr-x", size: "140KB" },
-  { name: "React 19", icon: <FaReact />, category: "Frontend", level: "Advanced", percent: 85, perm: "-rwxr-xr-x", size: "220KB" },
-  { name: "HTML5 / Semantics", icon: <FaHtml5 />, category: "Frontend", level: "Expert", percent: 95, perm: "-rw-r--r--", size: "32KB" },
-  { name: "CSS3 / Modern Layouts", icon: <FaCss3Alt />, category: "Frontend", level: "Expert", percent: 95, perm: "-rw-r--r--", size: "54KB" },
-  { name: "Tailwind CSS", icon: <SiTailwindcss />, category: "Frontend", level: "Advanced", percent: 90, perm: "-rw-r--r--", size: "96KB" },
-  { name: "Vite Bundler", icon: <SiVite />, category: "Frontend", level: "Advanced", percent: 85, perm: "-rwxr-xr-x", size: "40KB" },
-  { name: "Node.js", icon: <FaNodeJs />, category: "Backend", level: "Intermediate", percent: 70, perm: "-rwxr-xr-x", size: "180KB" },
-  { name: "MySQL", icon: <SiMysql />, category: "Database", level: "Advanced", percent: 85, perm: "-rw-r--r--", size: "160KB" },
-  { name: "MongoDB", icon: <SiMongodb />, category: "Database", level: "Intermediate", percent: 75, perm: "-rw-r--r--", size: "135KB" },
-  { name: "Git & Version Control", icon: <SiGit />, category: "Tools", level: "Advanced", percent: 88, perm: "-rwxr-xr-x", size: "90KB" },
+  { name: "React Native", icon: <FaMobileAlt />, category: "Mobile", level: "Expert", percent: 92, perm: "-rwxr-xr-x", size: "260KB" },
+  { name: "Expo & Expo Router", icon: <SiExpo />, category: "Mobile", level: "Advanced", percent: 90, perm: "-rwxr-xr-x", size: "180KB" },
+  { name: "TypeScript", icon: <SiTypescript />, category: "Languages", level: "Advanced", percent: 88, perm: "-rwxr-xr-x", size: "150KB" },
+  { name: "Python", icon: <FaPython />, category: "Languages", level: "Advanced", percent: 90, perm: "-rwxr-xr-x", size: "160KB" },
+  { name: "JavaScript (ES6+)", icon: <FaJs />, category: "Languages", level: "Expert", percent: 95, perm: "-rwxr-xr-x", size: "190KB" },
+  { name: "Java", icon: <FaJava />, category: "Languages", level: "Proficient", percent: 78, perm: "-rwxr-xr-x", size: "120KB" },
+  { name: "React.js", icon: <FaReact />, category: "Frontend", level: "Advanced", percent: 90, perm: "-rwxr-xr-x", size: "240KB" },
+  { name: "Pandas & NumPy", icon: <SiPandas />, category: "Libraries & ML", level: "Advanced", percent: 85, perm: "-rwxr-xr-x", size: "210KB" },
+  { name: "SQL & Relational DBs", icon: <SiMysql />, category: "Database", level: "Advanced", percent: 88, perm: "-rw-r--r--", size: "140KB" },
+  { name: "MongoDB", icon: <SiMongodb />, category: "Database", level: "Intermediate", percent: 78, perm: "-rw-r--r--", size: "135KB" },
+  { name: "Figma (UI/UX Systems)", icon: <FaFigma />, category: "Tools & Design", level: "Advanced", percent: 88, perm: "-rw-r--r--", size: "95KB" },
+  { name: "GitHub Co-Pilot & Stitch", icon: <SiGit />, category: "Tools & Design", level: "Advanced", percent: 92, perm: "-rwxr-xr-x", size: "110KB" },
+  { name: "HTML5 & Modern CSS", icon: <FaHtml5 />, category: "Frontend", level: "Expert", percent: 95, perm: "-rw-r--r--", size: "85KB" },
+  { name: "Tailwind CSS", icon: <SiTailwindcss />, category: "Frontend", level: "Expert", percent: 92, perm: "-rw-r--r--", size: "110KB" },
+  { name: "Node.js & APIs", icon: <FaNodeJs />, category: "Backend", level: "Intermediate", percent: 75, perm: "-rwxr-xr-x", size: "160KB" },
+  { name: "Git & Version Control", icon: <SiGit />, category: "Tools & Design", level: "Advanced", percent: 90, perm: "-rwxr-xr-x", size: "90KB" },
   { name: "Technical Communication", icon: <FaComments />, category: "Soft Skills", level: "Expert", percent: 95, perm: "-rw-r--r--", size: "CORE" },
-  { name: "Project Leadership", icon: <FaUsers />, category: "Soft Skills", level: "Advanced", percent: 85, perm: "-rw-r--r--", size: "CORE" },
-  { name: "Agile Time Management", icon: <FaClock />, category: "Soft Skills", level: "Advanced", percent: 90, perm: "-rw-r--r--", size: "CORE" },
+  { name: "Project Leadership", icon: <FaUsers />, category: "Soft Skills", level: "Advanced", percent: 90, perm: "-rw-r--r--", size: "CORE" },
+  { name: "Agile Time Management", icon: <FaClock />, category: "Soft Skills", level: "Advanced", percent: 88, perm: "-rw-r--r--", size: "CORE" },
 ];
 
-const CATEGORIES = ["ALL", "Languages", "Frontend", "Backend", "Database", "Tools", "Soft Skills"];
+const CATEGORIES = ["ALL", "Mobile", "Languages", "Frontend", "Libraries & ML", "Database", "Tools & Design", "Soft Skills"];
 
 const Skills = ({ onNavigate }) => {
   const [selectedCategory, setSelectedCategory] = useState("ALL");
@@ -104,7 +117,7 @@ const Skills = ({ onNavigate }) => {
                   onClick={() => handleFilter(cat)}
                   className={`filter-pill ${selectedCategory === cat ? "active" : ""}`}
                 >
-                  {cat === "ALL" ? "--all" : `--${cat.toLowerCase().replace(" ", "-")}`}
+                  {cat === "ALL" ? "--all" : `--${cat.toLowerCase().replace(/[^a-z0-9]/g, "-")}`}
                 </button>
               ))}
             </div>

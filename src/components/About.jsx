@@ -5,10 +5,11 @@ import {
   FaTerminal, 
   FaGraduationCap, 
   FaMapMarkerAlt, 
-  FaBriefcase, 
-  FaHeart, 
+  FaCertificate, 
+  FaAward, 
   FaCode,
-  FaArrowRight
+  FaArrowRight,
+  FaCheck
 } from "react-icons/fa";
 
 const AVATAR_ASCII = `
@@ -24,30 +25,57 @@ const AVATAR_ASCII = `
 `;
 
 const STATS = [
-  { label: "EXP LEVEL", value: "5+ Months Daily Code", detail: "Fast-learning fullstack generalist" },
-  { label: "EDUCATION", value: "Computer Science", detail: "NIT Trichy / Engineering mindset" },
-  { label: "BASE LOCATION", value: "Tamil Nadu, India", detail: "Remote & Worldwide collaborative" },
-  { label: "CORE CREED", value: "Anti-Slop Craft", detail: "Intentional, high-performance web apps" },
+  { label: "ACADEMICS", value: "B.Tech CSE (2023 - 2027)", detail: "SRM IST-Trichy // GPA: 9.2 / 10" },
+  { label: "CERTIFICATIONS", value: "Oracle OCI 2025 Certified", detail: "Microsoft DSA, Coursera ML & IoT" },
+  { label: "ENGINEERING FOCUS", value: "Mobile (React Native) & Fullstack", detail: "Python ML, Web Dev, State Architecture" },
+  { label: "BASE LOCATION", value: "Trichy, TN // Patna, Bihar", detail: "Remote & Worldwide Collaborative" },
+];
+
+const CERTIFICATIONS = [
+  {
+    name: "Oracle Cloud Infrastructure 2025 Certified Foundations Associate",
+    issuer: "Oracle University",
+    id: "323479580OCI25AICFA",
+    year: "2025"
+  },
+  {
+    name: "Data Structures And Algorithms Professional Certification",
+    issuer: "Microsoft / Coursera",
+    id: "Verified Credential",
+    year: "2024"
+  },
+  {
+    name: "Machine Learning Specialization Certification",
+    issuer: "Coursera",
+    id: "Verified Credential",
+    year: "2024"
+  },
+  {
+    name: "Internet Of Things (IoT) Systems Certification",
+    issuer: "Coursera",
+    id: "Verified Credential",
+    year: "2024"
+  }
 ];
 
 const PHILOSOPHIES = [
   {
-    tag: "01 // TASTE OVER TEMPLATES",
-    desc: "Every interface must feel tailored and distinctive. No generic boilerplates or bland defaults."
+    tag: "01 // MOBILE & SYSTEM RESILIENCE",
+    desc: "From battery-aware background GPS polling (SmartJourney) to offline-first AsyncStorage state (Habit Tracker), I build software that performs reliably in real-world mobile conditions."
   },
   {
-    tag: "02 // SNAPPY RESPONSIVENESS",
-    desc: "Zero unnecessary loading spinners. Fluid zero-friction interactions designed for human flow."
+    tag: "02 // DATA & ML APPLIED PRACTICALLY",
+    desc: "Vectorizing 5,000+ movie embeddings using Cosine Similarity, Pandas, and NumPy to power responsive, zero-latency recommendation workflows."
   },
   {
-    tag: "03 // FULL SPECTRUM COGNITION",
-    desc: "From database schemas and API integrations to pixel-perfect micro-interactions and terminal aesthetics."
+    tag: "03 // ACADEMIC RIGOR & CLEAN CODE",
+    desc: "Maintaining a 9.2 GPA at SRM IST-Trichy while building end-to-end applications in React Native, TypeScript, Expo, Python, and modern web frameworks."
   }
 ];
 
 const About = ({ onNavigate }) => {
   const [typedCommand, setTypedCommand] = useState("");
-  const fullCommand = "whoami --verbose --all";
+  const fullCommand = "whoami --academic-profile --certs --verbose";
 
   useEffect(() => {
     let i = 0;
@@ -58,7 +86,7 @@ const About = ({ onNavigate }) => {
       } else {
         clearInterval(interval);
       }
-    }, 35);
+    }, 30);
     return () => clearInterval(interval);
   }, []);
 
@@ -74,9 +102,9 @@ const About = ({ onNavigate }) => {
           </div>
           <div className="window-title">
             <FaTerminal className="title-icon" />
-            samar@samarworks-os: ~/whoami (cat bio.md)
+            samar@samarworks-os: ~/whoami (cat resume.json)
           </div>
-          <div className="window-status-tag">PROFILE_OK</div>
+          <div className="window-status-tag">SRM_IST // 9.2_GPA</div>
         </div>
 
         {/* Content Body */}
@@ -99,28 +127,32 @@ const About = ({ onNavigate }) => {
               <pre className="avatar-ascii">{AVATAR_ASCII}</pre>
               <div className="profile-identity">
                 <h2 className="profile-name">Samar Pratap Singh</h2>
-                <div className="profile-role">Full Stack Developer & Designer</div>
+                <div className="profile-role">Full Stack & Mobile Engineer (React Native / Python)</div>
                 <div className="profile-location">
-                  <FaMapMarkerAlt /> Tiruchirappalli, Tamil Nadu
+                  <FaMapMarkerAlt /> SRM IST-Trichy, Tamil Nadu
                 </div>
               </div>
 
               <div className="quick-spec-table">
                 <div className="spec-line">
-                  <span className="spec-k">STATUS</span>
-                  <span className="spec-v active-status">● Open to Work</span>
+                  <span className="spec-k">DEGREE</span>
+                  <span className="spec-v">B.Tech CSE (2027)</span>
                 </div>
                 <div className="spec-line">
-                  <span className="spec-k">SHELL</span>
-                  <span className="spec-v">zsh / React 19</span>
+                  <span className="spec-k">INSTITUTE</span>
+                  <span className="spec-v">SRM IST-Trichy</span>
                 </div>
                 <div className="spec-line">
-                  <span className="spec-k">WORK STYLE</span>
-                  <span className="spec-v">Autonomous & Rapid</span>
+                  <span className="spec-k">GPA / SCORE</span>
+                  <span className="spec-v active-status">9.2 / 10.0</span>
                 </div>
                 <div className="spec-line">
-                  <span className="spec-k">CONTACT</span>
-                  <span className="spec-v">samarpratapyes.01</span>
+                  <span className="spec-k">LANGUAGES</span>
+                  <span className="spec-v">Hindi (Native), English (Prof)</span>
+                </div>
+                <div className="spec-line">
+                  <span className="spec-k">PRIMARY EMAIL</span>
+                  <span className="spec-v">ss8073@srmist.edu.in</span>
                 </div>
               </div>
 
@@ -135,19 +167,20 @@ const About = ({ onNavigate }) => {
               </button>
             </div>
 
-            {/* Right Column: Bio & Core Philosophy */}
+            {/* Right Column: Bio, Academic & Achievements */}
             <div className="about-main-content">
+              {/* Bio Prose Card */}
               <div className="terminal-card">
                 <div className="card-header">
                   <span className="card-tag">SYSTEM_BIOGRAPHY</span>
-                  <span className="card-file">bio.markdown</span>
+                  <span className="card-file">profile.markdown</span>
                 </div>
                 <div className="bio-prose">
                   <p>
-                    I am an engineer, developer, and interface creator driven by a deep curiosity for how software feels under the fingers. I specialize in building responsive, personality-rich applications with modern technologies like React, Tailwind, and Node.js.
+                    I am a Computer Science & Engineering student at <strong>SRM IST-Trichy</strong> (CGPA: <strong>9.2/10</strong>) specializing in cross-platform mobile development (React Native, Expo, TypeScript) and full-stack systems.
                   </p>
                   <p>
-                    Rather than building generic cookie-cutter web pages, I craft memorable digital experiences where function and tactile design reinforce each other. Whether designing browser extensions, interactive games, or full-stack web platforms, I obsess over performance, clarity, and intentional aesthetics.
+                    My recent work focuses on solving real-world engineering challenges — such as building <strong>SmartJourney</strong> (an intelligent location-based travel alarm using background GPS tracking and 5-stage alarm escalation), an ML-based <strong>Movie Recommender</strong> trained on 5,000+ films, and offline-first mobile applications with clean state architecture.
                   </p>
                 </div>
               </div>
@@ -161,6 +194,27 @@ const About = ({ onNavigate }) => {
                     <div className="metric-detail">{stat.detail}</div>
                   </div>
                 ))}
+              </div>
+
+              {/* Certifications & Achievements Card */}
+              <div className="terminal-card">
+                <div className="card-header">
+                  <span className="card-tag">CERTIFICATIONS & ACHIEVEMENTS</span>
+                  <span className="card-file">credentials.v2</span>
+                </div>
+                <div className="principles-list">
+                  {CERTIFICATIONS.map(cert => (
+                    <div key={cert.name} className="principle-item">
+                      <div className="principle-tag">
+                        <FaAward style={{ color: "var(--amber-accent)", marginRight: "6px" }} />
+                        {cert.name}
+                      </div>
+                      <div className="principle-desc">
+                        Issued by <strong>{cert.issuer}</strong> ({cert.year}) — Credential: <code>{cert.id}</code>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
 
               {/* Philosophy Cards */}
@@ -183,14 +237,14 @@ const About = ({ onNavigate }) => {
               <div className="subpage-nav-bar">
                 <span className="nav-bar-label">PROCEED TO DIRECTORY:</span>
                 <div className="nav-bar-buttons">
-                  <button onClick={() => onNavigate("skills")} className="nav-pill">
-                    $ ls skills/
-                  </button>
                   <button onClick={() => onNavigate("portfolio")} className="nav-pill">
                     $ git log projects/
                   </button>
-                  <button onClick={() => onNavigate("services")} className="nav-pill">
-                    $ systemctl services
+                  <button onClick={() => onNavigate("skills")} className="nav-pill">
+                    $ ls skills/
+                  </button>
+                  <button onClick={() => onNavigate("contact")} className="nav-pill">
+                    $ contact --reach
                   </button>
                 </div>
               </div>
